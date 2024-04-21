@@ -1,4 +1,5 @@
-﻿using Caramelo.MvvmApp.Dialogs;
+﻿using System.Reactive;
+using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.ViewModel;
 
 namespace Caramelo.MvvmApp.Services;
@@ -23,6 +24,12 @@ public interface IDialogService
         where TViewModel : MvvmDialogViewModel<TParameter, TResult>
         where TParameter : DialogOptions
         where TResult : notnull;
+
+    Task ShowAsync<TViewModel>(DialogOptions options)
+        where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>;
+    
+    Task ShowAsync<TViewModel>()
+        where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>;
 
     #endregion
 }

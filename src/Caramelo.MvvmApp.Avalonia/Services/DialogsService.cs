@@ -69,6 +69,16 @@ public sealed class DialogsService : IDialogService
     {
         return ShowAsync<ConfirmDialogViewModel, bool, DialogMensageOptions>(new DialogMensageOptions { Titulo = title, Mensagem = message });
     }
+    
+    public Task ShowAsync<TViewModel>(DialogOptions options) where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>
+    {
+        return ShowAsync<TViewModel, Unit, DialogOptions>(options);
+    }
+
+    public Task ShowAsync<TViewModel>() where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>
+    {
+        return ShowAsync<TViewModel, Unit, DialogOptions>(new DialogOptions());
+    }
 
     public async Task<TResult> ShowAsync<TViewModel, TResult, TParameter>(TParameter parameter)
         where TViewModel : MvvmDialogViewModel<TParameter, TResult>
@@ -96,7 +106,7 @@ public sealed class DialogsService : IDialogService
 
         try
         {
-            return await TaskObservableExtensions.ToTask<TResult>(model.DialogResult);
+            return await model.DialogResult.ToTask();
         }
         catch (Exception)
         {

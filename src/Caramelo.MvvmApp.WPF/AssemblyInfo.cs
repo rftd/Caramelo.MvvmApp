@@ -10,6 +10,6 @@ using System.Windows.Markup;
     // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: XmlnsPrefix("https://github.com/rftd/Caramelo.MvvmApp", "mvvm")]
+[assembly: XmlnsPrefix("https://github.com/rftd/Caramelo.MvvmApp", "caramelo")]
 [assembly: XmlnsDefinition("https://github.com/rftd/Caramelo.MvvmApp", "Caramelo.MvvmApp.WPF")]
 [assembly: XmlnsDefinition("https://github.com/rftd/Caramelo.MvvmApp", "Caramelo.MvvmApp.WPF.Controls")]

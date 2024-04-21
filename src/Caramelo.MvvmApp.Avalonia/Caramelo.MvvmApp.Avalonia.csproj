@@ -17,6 +17,7 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(CI)' == 'true'">

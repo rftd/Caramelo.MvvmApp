@@ -5,6 +5,7 @@
       <map>
         <entry key="Caramelo.MvvmApp.Avalonia.Demo/App.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
         <entry key="Caramelo.MvvmApp.Avalonia.Demo/Views/AvaloniaBootstrapperView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
+        <entry key="Caramelo.MvvmApp.Avalonia/Dialogs/ConfirmDialogView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
       </map>
     </option>
   </component>
