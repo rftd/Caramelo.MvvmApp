@@ -1,0 +1,12 @@
+<demo:DemoApp x:Class="Caramelo.MvvmApp.Avalonia.Demo.App"
+              xmlns="https://github.com/avaloniaui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+              xmlns:demo="clr-namespace:Caramelo.MvvmApp.Avalonia.Demo">
+    <demo:DemoApp.Styles>
+        <FluentTheme />
+        <themes:MaterialTheme BaseTheme="Light" PrimaryColor="LightGreen" SecondaryColor="Lime" />
+        <avalonia:MaterialIconStyles />
+    </demo:DemoApp.Styles>
+</demo:DemoApp>

@@ -1,0 +1,65 @@
+<mvvm:MvvmWindow x:TypeArguments="vm:AppBootstrapperViewModel" xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:rxui="http://reactiveui.net"
+                 xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+                 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+                 xmlns:mvvm="https://github.com/rftd/Caramelo.MvvmApp"
+                 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                 x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.AvaloniaBootstrapperView"
+                 Icon="/Assets/avalonia-logo.ico"
+                 Title="ReactiveUI.Mvvm.Avalonia.Demo">
+
+    <Design.DataContext>
+        <vm:AppBootstrapperViewModel/>
+    </Design.DataContext>
+    
+    <controls:SnackbarHost HostName="Root">
+        <controls:NavigationDrawer LeftDrawerExpandThresholdWidth="" 
+            LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+            <controls:NavigationDrawer.LeftDrawerContent>
+                <StackPanel>
+                    <ListBox>
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Height" Value="48" />
+                                <Setter Property="Padding" Value="16,0" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBoxItem>Home</ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+            </controls:NavigationDrawer.LeftDrawerContent>
+            
+            <DockPanel LastChildFill="true">
+                <controls:ColorZone DockPanel.Dock="Top"
+                                    VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                    Height="56" Mode="PrimaryMid" ZIndex="1">
+                    
+                    <Grid Margin="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24" />
+                            <ColumnDefinition Width="32" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="32" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ToggleButton Name="NavDrawerSwitch" Foreground="White"
+                                      Width="32" Height="32" Padding="4">
+                            <avalonia:MaterialIcon Kind="Menu" Width="24" Height="24" />
+                        </ToggleButton>
+                        <TextBlock Grid.Column="2" Text="Avalonia Demo" VerticalAlignment="Center" />
+                    </Grid>
+                </controls:ColorZone>
+                
+                <rxui:RoutedViewHost DockPanel.Dock="Top" Router="{Binding Router}"
+                                     HorizontalContentAlignment="Stretch"
+                                     VerticalContentAlignment="Stretch" />
+            
+            </DockPanel>
+        </controls:NavigationDrawer>
+    </controls:SnackbarHost>
+</mvvm:MvvmWindow>

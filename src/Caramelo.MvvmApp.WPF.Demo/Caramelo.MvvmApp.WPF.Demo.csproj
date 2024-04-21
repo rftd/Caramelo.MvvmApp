@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+        <StartupObject>Caramelo.MvvmApp.WPF.Demo.Program</StartupObject>        
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Page Update="Views\WpfAppBootstrapperView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Caramelo.MvvmApp.Demo.Core\Caramelo.MvvmApp.Demo.Core.csproj" />
+      <ProjectReference Include="..\Caramelo.MvvmApp.WPF\Caramelo.MvvmApp.WPF.csproj" />
+      <ProjectReference Include="..\Caramelo.MvvmApp\Caramelo.MvvmApp.csproj" />
+    </ItemGroup>
+
+</Project>

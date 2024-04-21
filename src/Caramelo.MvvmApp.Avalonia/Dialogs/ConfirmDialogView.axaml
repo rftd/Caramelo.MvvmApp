@@ -1,0 +1,21 @@
+﻿<controls:MvvmUserControl x:TypeArguments="dialogs:ConfirmDialogViewModel" 
+                          x:Class="Caramelo.MvvmApp.Avalonia.Dialogs.ConfirmDialogView"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:dialogs="clr-namespace:Caramelo.MvvmApp.Dialogs;assembly=Caramelo.MvvmApp"
+                          xmlns:controls="clr-namespace:Caramelo.MvvmApp.Avalonia.Controls"
+                          MinWidth="250" MinHeight="100" MaxWidth="500" MaxHeight="300">
+    
+    <Design.DataContext>
+        <dialogs:ConfirmDialogViewModel/>
+    </Design.DataContext>
+    
+    <Grid Margin="15" RowDefinitions="*,Auto">
+        <TextBlock Grid.Row="0" Text="{Binding Message}" TextWrapping="Wrap"/>
+        
+        <StackPanel Grid.Row="1" Margin="0, 15, 0, 0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Sim" Command="{Binding YesCommand}" Width="75" MinHeight="23" />
+            <Button Content="Não" Margin="5, 0" Command="{Binding NoCommand}" Width="75" MinHeight="23" />
+        </StackPanel>
+    </Grid>
+</controls:MvvmUserControl>

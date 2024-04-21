@@ -1,0 +1,24 @@
+﻿<controls:MvvmUserControl x:TypeArguments="dialogs:ConfirmDialogViewModel" 
+                          x:Class="Caramelo.MvvmApp.WPF.Dialogs.ConfirmDialogView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:dialogs="clr-namespace:Caramelo.MvvmApp.Dialogs;assembly=Caramelo.MvvmApp"
+                          xmlns:controls="clr-namespace:Caramelo.MvvmApp.WPF.Controls"
+                          mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=dialogs:ConfirmDialogViewModel}"
+                          d:DesignWidth="500" d:DesignHeight="300" MaxWidth="500" MaxHeight="300">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="{Binding Message}" TextWrapping="Wrap"/>
+        
+        <StackPanel Grid.Row="1" Margin="0, 15, 0, 0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Sim" Command="{Binding YesCommand}" Width="75" Height="23" />
+            <Button Content="Não" Margin="5, 0" Command="{Binding NoCommand}" Width="75" Height="23" />
+        </StackPanel>
+    </Grid>
+</controls:MvvmUserControl>

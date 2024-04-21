@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="MvvmApp.ReactiveUI.Avalonia.Demo/App.axaml" value="MvvmApp.ReactiveUI.Avalonia.Demo/MvvmApp.ReactiveUI.Avalonia.Demo.csproj" />
+        <entry key="MvvmApp.ReactiveUI.Avalonia.Demo/Views/AvaloniaBootstrapperView.axaml" value="MvvmApp.ReactiveUI.Avalonia.Demo/MvvmApp.ReactiveUI.Avalonia.Demo.csproj" />
+        <entry key="MvvmApp.ReactiveUI.Avalonia/Dialogs/ConfirmDialogView.axaml" value="MvvmApp.ReactiveUI.Avalonia.Demo/MvvmApp.ReactiveUI.Avalonia.Demo.csproj" />
+        <entry key="MvvmApp.ReactiveUI.Avalonia/Dialogs/InputDialogView.axaml" value="MvvmApp.ReactiveUI.Avalonia.Demo/MvvmApp.ReactiveUI.Avalonia.Demo.csproj" />
+        <entry key="MvvmApp.ReactiveUI.Avalonia/Dialogs/MessageDialogView.axaml" value="MvvmApp.ReactiveUI.Avalonia.Demo/MvvmApp.ReactiveUI.Avalonia.Demo.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
