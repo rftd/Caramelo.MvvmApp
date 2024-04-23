@@ -10,7 +10,7 @@ public interface IMvvmDialogViewModel<TParameter, TResult> where TParameter : Di
     
     bool CanClose { get; set; }
     
-    IObservable<TResult> DialogResult { get; }
+    TResult DialogResult { get; }
     
     IServiceProvider Service { get; }
     

@@ -87,8 +87,6 @@ public sealed class DialogsService : IDialogService
     {
 
         var model = service.GetRequiredService<TViewModel>();
-        model.Initialize(parameter);
-        
         var viewLocator = service.GetRequiredService<IViewLocator>();
         var viewFor = viewLocator.ResolveView(model);
         if (viewFor == null) throw new ApplicationException("View Não cadastrada.");
@@ -101,12 +99,21 @@ public sealed class DialogsService : IDialogService
             _ => throw new ApplicationException("View Não Suportada.")
         };
         
-        ConfigureWindow<TViewModel, TParameter, TResult>(window, model, parameter);
+        model.Initialize(parameter);
+        model.WhenPropertyChanged(x => x.CanClose)
+            .Subscribe(x =>
+            {
+                if(!x.Value) return;
+                
+                window.Close();
+            });
+
+        ConfigureWindow<TViewModel, TParameter, TResult>(window, model);
         await window.ShowDialog(DesktopApp.MainWindow!);
 
         try
         {
-            return await model.DialogResult.ToTask();
+            return model.DialogResult;
         }
         catch (Exception)
         {
@@ -132,21 +139,14 @@ public sealed class DialogsService : IDialogService
         return window;
     }
 
-    private static void ConfigureWindow<TViewModel, TParameter, TResult>(Window window, TViewModel viewModel, TParameter parameter)
+    private static void ConfigureWindow<TViewModel, TParameter, TResult>(Window window, TViewModel viewModel)
         where TViewModel : MvvmDialogViewModel<TParameter, TResult>
         where TParameter : DialogOptions
         where TResult : notnull
     {
-        window.Bind(Window.TitleProperty, NotifyPropertyChangedEx.WhenPropertyChanged<TViewModel, string>(viewModel, x => x.Title));
+        window.Bind(Window.TitleProperty, viewModel.WhenPropertyChanged<TViewModel, string>(x => x.Title));
         window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
-        NotifyPropertyChangedEx.WhenPropertyChanged<TViewModel, bool>(viewModel, x => x.CanClose)
-            .Subscribe(x =>
-            {
-                if(!x.Value) return;
-                
-                window.Close();
-            });
-
+        
         try
         {
             window.Icon = DesktopApp.MainWindow?.Icon;

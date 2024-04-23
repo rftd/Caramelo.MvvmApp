@@ -1,6 +1,8 @@
 ﻿using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Caramelo.MvvmApp.Dialogs;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 
 namespace Caramelo.MvvmApp.ViewModel;
@@ -13,7 +15,7 @@ public abstract class MvvmDialogViewModel<TParameter, TResult> : ReactiveObject,
     private bool isBusy;
     private string title = string.Empty;
     private bool canClose;
-    private Subject<TResult> dialogResult;
+    private TResult dialogResult;
 
     #endregion Fields
 
@@ -22,8 +24,8 @@ public abstract class MvvmDialogViewModel<TParameter, TResult> : ReactiveObject,
     protected MvvmDialogViewModel(IServiceProvider service)
     {
         Service = service;
+        Log = Service.GetRequiredService<ILogger<MvvmDialogViewModel<TParameter, TResult>>>();
         IsBusy = false;
-        dialogResult = new Subject<TResult>();
     }
 
     #endregion Constructors
@@ -32,7 +34,13 @@ public abstract class MvvmDialogViewModel<TParameter, TResult> : ReactiveObject,
 
     public IServiceProvider Service { get; }
     
-    public IObservable<TResult> DialogResult => dialogResult.AsObservable();
+    public ILogger Log { get; }
+    
+    public TResult DialogResult
+    {
+        get => dialogResult;
+        set => this.RaiseAndSetIfChanged(ref dialogResult, value);
+    }
     
     public bool IsBusy
     {
@@ -60,9 +68,7 @@ public abstract class MvvmDialogViewModel<TParameter, TResult> : ReactiveObject,
 
     protected void SetResult(TResult result)
     {
-        dialogResult.OnNext(result);
-        dialogResult.OnCompleted();
-        dialogResult.Dispose();
+        dialogResult = result;
         CanClose = true;
     }
     

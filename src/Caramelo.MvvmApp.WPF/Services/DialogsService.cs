@@ -79,13 +79,11 @@ public sealed class DialogsService : IDialogService
     {
 
         var model = service.GetRequiredService<TViewModel>();
-        model.Initialize(parameter);
-        
         var viewLocator = service.GetRequiredService<IViewLocator>();
         var viewFor = viewLocator.ResolveView(model);
         if (viewFor == null) throw new ApplicationException("View Não cadastrada.");
+        
         viewFor.ViewModel = model;
-
         var window = viewFor switch
         {
             UserControl mvvmUserControl => CreateWindow(mvvmUserControl),
@@ -93,12 +91,21 @@ public sealed class DialogsService : IDialogService
             _ => throw new ApplicationException("View Não Suportada.")
         };
         
+        model.Initialize(parameter);
+        model.WhenPropertyChanged(x => x.CanClose)
+            .Subscribe(x =>
+            {
+                if(!x.Value) return;
+                
+                window.Close();
+            });
+        
         ConfigureWindow<TViewModel, TParameter, TResult>(window, model, parameter);
         window.ShowDialog();
 
         try
         {
-            return model.DialogResult.ToTask();
+            return Task.FromResult(model.DialogResult);
         }
         catch (Exception)
         {
@@ -131,14 +138,6 @@ public sealed class DialogsService : IDialogService
     {
         window.SetBinding(Window.TitleProperty, new Binding("Title"){ Source = viewModel });
         window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
-        viewModel.WhenPropertyChanged(x => x.CanClose)
-            .Subscribe(x =>
-            {
-                if(!x.Value) return;
-                
-                window.Close();
-            });
-
         window.SourceInitialized += (_, _) =>
         {
             if (!parameter.CanMinimize)
