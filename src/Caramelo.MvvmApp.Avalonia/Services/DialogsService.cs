@@ -123,9 +123,6 @@ public sealed class DialogsService : IDialogService
 
     private static Window CreateWindow(Control dialog)
     {
-        Grid.SetRow(dialog, 0);
-        Grid.SetColumn(dialog, 0);
-        
         var window = new Window
         {
             Content = new DockPanel
@@ -133,7 +130,8 @@ public sealed class DialogsService : IDialogService
                 LastChildFill = true,
                 Children = { dialog }
             },
-            SizeToContent = SizeToContent.WidthAndHeight
+            SizeToContent = SizeToContent.WidthAndHeight,
+            CanResize = false
         };
 
         return window;
@@ -144,7 +142,7 @@ public sealed class DialogsService : IDialogService
         where TParameter : DialogOptions
         where TResult : notnull
     {
-        window.Bind(Window.TitleProperty, viewModel.WhenPropertyChanged<TViewModel, string>(x => x.Title));
+        window.Bind(Window.TitleProperty, viewModel.WhenPropertyChanged(x => x.Title));
         window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
         
         try

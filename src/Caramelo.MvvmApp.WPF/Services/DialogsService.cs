@@ -115,9 +115,6 @@ public sealed class DialogsService : IDialogService
 
     private static Window CreateWindow(UIElement dialog)
     {
-        Grid.SetRow(dialog, 0);
-        Grid.SetColumn(dialog, 0);
-        
         var window = new Window
         {
             Content = new DockPanel
@@ -125,7 +122,8 @@ public sealed class DialogsService : IDialogService
                 LastChildFill = true,
                 Children = { dialog }
             },
-            SizeToContent = SizeToContent.WidthAndHeight
+            SizeToContent = SizeToContent.WidthAndHeight,
+            ResizeMode = ResizeMode.NoResize
         };
 
         return window;
