@@ -1,4 +1,5 @@
-﻿using Caramelo.MvvmApp.ViewModel;
+﻿using System.Reflection;
+using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ReactiveUI;
@@ -7,6 +8,32 @@ namespace Caramelo.MvvmApp.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddViewAndModelFromAssembly(this IServiceCollection services)
+    {
+        return services.AddViewAndModelFromAssembly(Assembly.GetExecutingAssembly());
+    }
+    
+    public static IServiceCollection AddViewAndModelFromAssembly(this IServiceCollection services, Assembly assembly)
+    {
+        var viewModel = typeof(IMvvmViewModel);
+        var routerModel = typeof(RouterViewModel);
+        var viewModels = assembly.GetTypes()
+            .Where(type => viewModel.IsAssignableFrom(type) && !routerModel.IsAssignableFrom(type) && 
+                        type is {IsAbstract: false, IsInterface: false})
+            .ToArray();
+
+        foreach (var model in viewModels)
+        {
+            var viewType = typeof(IViewFor<>).MakeGenericType(model);
+            var view = assembly.GetTypes().SingleOrDefault(x => viewType.IsAssignableFrom(x));
+            if(view == null) continue;
+
+            services.AddTransient(model).AddTransient(view);
+        }
+        
+        return services;
+    }
+    
     public static IServiceCollection AddViewTransient<TView, TViewModel>(this IServiceCollection services)
         where TView : class, IViewFor<TViewModel>
         where TViewModel : ReactiveObject, IMvvmViewModel

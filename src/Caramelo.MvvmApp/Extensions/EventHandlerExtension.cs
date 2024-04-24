@@ -20,7 +20,7 @@ public static class EventHandlerExtension
             return;
 
         if (eventHandler.Target is ISynchronizeInvoke {InvokeRequired: true} synchronizeInvoke)
-            synchronizeInvoke.Invoke(eventHandler, new[] {sender, e});
+            synchronizeInvoke.Invoke(eventHandler, [sender, e]);
         else
             eventHandler.DynamicInvoke(sender, e);
     }
@@ -38,7 +38,7 @@ public static class EventHandlerExtension
             return;
 
         if (eventHandler.Target is ISynchronizeInvoke {InvokeRequired: true} synchronizeInvoke)
-            synchronizeInvoke.Invoke(eventHandler, new[] {sender, e});
+            synchronizeInvoke.Invoke(eventHandler, [sender, e]);
         else
             eventHandler.DynamicInvoke(sender, e);
     }
@@ -55,7 +55,7 @@ public static class EventHandlerExtension
             return;
 
         if (eventHandler.Target is ISynchronizeInvoke {InvokeRequired: true} synchronizeInvoke)
-            synchronizeInvoke.Invoke(eventHandler, new[] {sender, e});
+            synchronizeInvoke.Invoke(eventHandler, [sender, e]);
         else
             eventHandler.DynamicInvoke(sender, e);
     }
@@ -73,7 +73,7 @@ public static class EventHandlerExtension
             return;
 
         if (eventHandler.Target is ISynchronizeInvoke {InvokeRequired: true} synchronizeInvoke)
-            synchronizeInvoke.Invoke(eventHandler, new[] {sender, e});
+            synchronizeInvoke.Invoke(eventHandler, [sender, e]);
         else
             eventHandler.DynamicInvoke(sender, e);
     }
@@ -91,7 +91,7 @@ public static class EventHandlerExtension
             return;
 
         if (eventHandler.Target is ISynchronizeInvoke {InvokeRequired: true} synchronizeInvoke)
-            synchronizeInvoke.Invoke(eventHandler, new[] {sender, e});
+            synchronizeInvoke.Invoke(eventHandler, [sender, e]);
         else
             eventHandler.DynamicInvoke(sender, e);
     }
@@ -108,7 +108,7 @@ public static class EventHandlerExtension
 
         var e = EventArgs.Empty;
         if (eventHandler.Target is ISynchronizeInvoke {InvokeRequired: true} synchronizeInvoke)
-            synchronizeInvoke.Invoke(eventHandler, new[] {sender, e});
+            synchronizeInvoke.Invoke(eventHandler, [sender, e]);
         else
             eventHandler.DynamicInvoke(sender, e);
     }
@@ -125,7 +125,7 @@ public static class EventHandlerExtension
 
         var e = EventArgs.Empty;
         if (eventHandler.Target is ISynchronizeInvoke {InvokeRequired: true} synchronizeInvoke)
-            synchronizeInvoke.Invoke(eventHandler, new[] {sender, e});
+            synchronizeInvoke.Invoke(eventHandler, [sender, e]);
         else
             eventHandler.DynamicInvoke(sender, e);
     }

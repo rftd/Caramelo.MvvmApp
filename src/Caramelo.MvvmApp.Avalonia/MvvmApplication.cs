@@ -105,7 +105,7 @@ public abstract class MvvmApplication<TViewModel> : Application
             DesktopApp.MainWindow = (Window)splashView;
             DesktopApp.MainWindow.Show();
 
-            ObservableExtensions.Subscribe<Unit>(splashViewModel.WhenFinished, _ =>
+            splashViewModel.WhenFinished.Subscribe(_ =>
             {
                 mainView!.ViewModel = appBootstrapper;
                 DesktopApp.MainWindow = (Window)mainView;
@@ -120,7 +120,7 @@ public abstract class MvvmApplication<TViewModel> : Application
             DesktopApp.MainWindow = (Window)mainView;
         }
         
-        ObservableExtensions.Subscribe<int>(appBootstrapper.OnFinishApp, code => DesktopApp.Shutdown(code));
+        appBootstrapper.OnFinishApp.Subscribe(code => DesktopApp.Shutdown(code));
     }
     
     #endregion Methods
