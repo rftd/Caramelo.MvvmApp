@@ -11,6 +11,7 @@ public abstract class RouterViewModel : MvvmViewModel, IScreen
     #region Fields
 
     private Subject<int> finishApp;
+    private readonly Subject<string[]> restartApp;
 
     #endregion Fields
     
@@ -20,7 +21,6 @@ public abstract class RouterViewModel : MvvmViewModel, IScreen
     {
         Router = ((NavigationService)Navigation).Router;
         finishApp = new Subject<int>();
-        FinishAppCommand = ReactiveCommand.Create(() => FinishApp());
     }
 
     #endregion Constructors
@@ -30,8 +30,8 @@ public abstract class RouterViewModel : MvvmViewModel, IScreen
     public RoutingState Router { get; }
     
     public IObservable<int> OnFinishApp => finishApp.AsObservable();
-
-    public ReactiveCommand<Unit, Unit> FinishAppCommand { get; protected set; }
+    
+    public IObservable<string[]> OnRestartApp => restartApp.AsObservable();
     
     #endregion Properties
 
@@ -42,6 +42,16 @@ public abstract class RouterViewModel : MvvmViewModel, IScreen
         finishApp.OnNext(code);
         finishApp.OnCompleted();
         finishApp.Dispose();
+    }
+    
+    protected void RestartApp()
+    {
+        var args = Environment.GetCommandLineArgs().ToList();
+        args.RemoveAt(0);
+        
+        restartApp.OnNext(args.ToArray());
+        restartApp.OnCompleted();
+        restartApp.Dispose();
     }
 
     #endregion Methods

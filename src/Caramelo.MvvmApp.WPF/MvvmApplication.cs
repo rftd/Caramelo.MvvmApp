@@ -2,6 +2,7 @@
 using System.Windows;
 using Caramelo.MvvmApp.Exceptions;
 using Caramelo.MvvmApp.ViewModel;
+using Caramelo.MvvmApp.WPF.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
@@ -127,6 +128,7 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
         }
         
         appBootstrapper.OnFinishApp.Subscribe(Shutdown);
+        appBootstrapper.OnRestartApp.Subscribe(this.Restart);
     }
 
     /// <summary>

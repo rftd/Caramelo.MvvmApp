@@ -6,6 +6,7 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Caramelo.MvvmApp.Avalonia.Extensions;
 using Caramelo.MvvmApp.Exceptions;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -120,7 +121,8 @@ public abstract class MvvmApplication<TViewModel> : Application
             DesktopApp.MainWindow = (Window)mainView;
         }
         
-        appBootstrapper.OnFinishApp.Subscribe(code => DesktopApp.Shutdown(code));
+        appBootstrapper.OnFinishApp.Subscribe(DesktopApp.Shutdown);
+        appBootstrapper.OnRestartApp.Subscribe(DesktopApp.Restart);
     }
     
     #endregion Methods
