@@ -21,6 +21,7 @@ public abstract class RouterViewModel : MvvmViewModel, IScreen
     {
         Router = ((NavigationService)Navigation).Router;
         finishApp = new Subject<int>();
+        restartApp = new Subject<string[]>();
     }
 
     #endregion Constructors
