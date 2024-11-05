@@ -1,15 +1,22 @@
+using Caramelo.MvvmApp.Navigation;
 using Caramelo.MvvmApp.ViewModel;
 
 namespace Caramelo.MvvmApp.Services;
 
 public interface INavigationService
 {
+    #region Properties
+
+    IObservable<MvvmNavigateEventArgs> BeforeNavigate { get; }
+
+    #endregion Properties
+
     #region Methods
 
     Task<bool> CanGoBack(IMvvmViewModel? viewModel = null);
-    
+
     Task<bool> CanGoTo(IMvvmViewModel? viewModel = null);
-    
+
     Task GoBackAsync<TModel>(TModel viewModel) where TModel : MvvmViewModel;
 
     Task GoBackAsync<TParameter, TResult>(MvvmViewModel<TParameter, TResult> viewModel, TResult result)

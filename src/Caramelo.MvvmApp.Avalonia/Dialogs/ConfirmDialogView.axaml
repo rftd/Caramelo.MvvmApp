@@ -1,13 +1,14 @@
-﻿<controls:MvvmUserControl x:TypeArguments="dialogs:ConfirmDialogViewModel" 
+﻿<controls:MvvmUserControl x:TypeArguments="viewModel:ConfirmDialogViewModel" 
                           x:Class="Caramelo.MvvmApp.Avalonia.Dialogs.ConfirmDialogView"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                           xmlns:dialogs="clr-namespace:Caramelo.MvvmApp.Dialogs;assembly=Caramelo.MvvmApp"
                           xmlns:controls="clr-namespace:Caramelo.MvvmApp.Avalonia.Controls"
+                          xmlns:viewModel="clr-namespace:Caramelo.MvvmApp.ViewModel;assembly=Caramelo.MvvmApp"
                           MinWidth="250" MinHeight="100" MaxWidth="500" MaxHeight="300">
     
     <Design.DataContext>
-        <dialogs:ConfirmDialogViewModel/>
+        <viewModel:ConfirmDialogViewModel/>
     </Design.DataContext>
     
     <Grid Margin="15" RowDefinitions="*,Auto">

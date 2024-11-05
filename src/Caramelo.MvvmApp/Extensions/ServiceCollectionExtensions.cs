@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddViewAndModelFromAssembly(this IServiceCollection services, Assembly assembly)
     {
         var viewModel = typeof(IMvvmViewModel);
-        var routerModel = typeof(RouterViewModel);
+        var routerModel = typeof(AppViewModel);
         var viewModels = assembly.GetTypes()
             .Where(type => viewModel.IsAssignableFrom(type) && !routerModel.IsAssignableFrom(type) && 
                         type is {IsAbstract: false, IsInterface: false})

@@ -1,8 +1,8 @@
 ﻿using System.Reactive;
-using Caramelo.MvvmApp.ViewModel;
+using Caramelo.MvvmApp.Dialogs;
 using ReactiveUI;
 
-namespace Caramelo.MvvmApp.Dialogs;
+namespace Caramelo.MvvmApp.ViewModel;
 
 public sealed class InputDialogViewModel : MvvmDialogViewModel<DialogMensageOptions, string>
 {

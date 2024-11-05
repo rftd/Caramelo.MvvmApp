@@ -6,18 +6,18 @@ using ReactiveUI;
 
 namespace Caramelo.MvvmApp.ViewModel;
 
-public abstract class RouterViewModel : MvvmViewModel, IScreen
+public abstract class AppViewModel : MvvmViewModel, IScreen
 {
     #region Fields
 
-    private Subject<int> finishApp;
+    private readonly Subject<int> finishApp;
     private readonly Subject<string[]> restartApp;
 
     #endregion Fields
     
     #region Constructors
 
-    protected RouterViewModel(IServiceProvider service) : base(service)
+    protected AppViewModel(IServiceProvider service) : base(service)
     {
         Router = ((NavigationService)Navigation).Router;
         finishApp = new Subject<int>();

@@ -7,7 +7,7 @@ internal class AvaloniaConfiguration : IAvaloniaConfiguration
 {
     #region Fields
 
-    private Action<AppBuilder> configure;
+    private readonly Action<AppBuilder> configure;
 
     #endregion Fields
 

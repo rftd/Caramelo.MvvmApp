@@ -39,17 +39,17 @@ public class MvvmWindow<TViewModel> : Window, IViewFor<TViewModel>
     #region Properties
 
     /// <inheritdoc />
-    public TViewModel ViewModel
+    public TViewModel? ViewModel
     {
         get => (TViewModel) DataContext!;
         set => DataContext = value;
     }
 
     /// <inheritdoc />
-    object IViewFor.ViewModel
+    object? IViewFor.ViewModel
     {
         get => ViewModel;
-        set => ViewModel = (TViewModel) value!;
+        set => ViewModel = (TViewModel?) value!;
     }
 
     #endregion Properties

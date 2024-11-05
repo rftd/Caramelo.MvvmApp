@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive;
 using System.Reflection;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Caramelo.MvvmApp.Avalonia.Extensions;
-using Caramelo.MvvmApp.Exceptions;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
@@ -15,7 +13,7 @@ using ReactiveUI;
 namespace Caramelo.MvvmApp.Avalonia;
 
 public abstract class MvvmApplication<TViewModel> : Application
-    where TViewModel : RouterViewModel
+    where TViewModel : AppViewModel
 {
     #region Private Fields
 
@@ -44,12 +42,18 @@ public abstract class MvvmApplication<TViewModel> : Application
 
     public IClassicDesktopStyleApplicationLifetime DesktopApp =>
         (IClassicDesktopStyleApplicationLifetime) ApplicationLifetime! ?? throw new InvalidOperationException();
+    
+    public TViewModel? ViewModel
+    {
+        get => (TViewModel?)DataContext;
+        set => DataContext = value;
+    }
 
     #endregion Properties
     
     #region Protected Methods
     
-    protected virtual void OnStarted(IEnumerable<string> args, bool isFirstInstance, TViewModel appBootstrapper)
+    protected virtual void OnStarted(IEnumerable<string> args, bool isFirstInstance)
     {
         if (!isFirstInstance)
             DesktopApp.Shutdown();
@@ -87,20 +91,21 @@ public abstract class MvvmApplication<TViewModel> : Application
         // If this is the first instance of the application, the mutex is set and stored, so that it can be disposed of when this instance closes
         if (isFirstInstance) singleInstanceMutex = mutex;
         
-        var appBootstrapper = MvvmApp.Current.Services.GetRequiredService<TViewModel>();
+        ViewModel = MvvmApp.Current.Services.GetRequiredService<TViewModel>();
         
         var viewLocator = MvvmApp.Current.Services.GetRequiredService<IViewLocator>();
-        var mainView = viewLocator.ResolveView(appBootstrapper);
-        Guard.Against<ApplicationException>(mainView == null, "View principal não encontrada.");
+        var mainView = viewLocator.ResolveView(ViewModel);
+
+        if(mainView == null) throw new ApplicationException("View principal não encontrada.");
         
         // Calls the on started method where the user is able to call his own code to set up the application
-        OnStarted(DesktopApp.Args ?? [], isFirstInstance, appBootstrapper);
+        OnStarted(DesktopApp.Args ?? [], isFirstInstance);
         
         var splashViewModel = MvvmApp.Current.Services.GetService<IMvvmSplashViewModel>();
         if (splashViewModel != null)
         {
             var splashView = viewLocator.ResolveView(splashViewModel);
-            Guard.Against<ApplicationException>(splashView == null, "SplashView não encontrada.");
+            if(splashView == null) throw new ApplicationException("SplashView não encontrada.");
 
             splashView!.ViewModel = splashViewModel;
             DesktopApp.MainWindow = (Window)splashView;
@@ -108,7 +113,7 @@ public abstract class MvvmApplication<TViewModel> : Application
 
             splashViewModel.WhenFinished.Subscribe(_ =>
             {
-                mainView!.ViewModel = appBootstrapper;
+                mainView!.ViewModel = ViewModel;
                 DesktopApp.MainWindow = (Window)mainView;
                 DesktopApp.MainWindow.Show();
             
@@ -117,12 +122,12 @@ public abstract class MvvmApplication<TViewModel> : Application
         }
         else
         {
-            mainView!.ViewModel = appBootstrapper;
+            mainView!.ViewModel = ViewModel;
             DesktopApp.MainWindow = (Window)mainView;
         }
         
-        appBootstrapper.OnFinishApp.Subscribe(DesktopApp.Shutdown);
-        appBootstrapper.OnRestartApp.Subscribe(DesktopApp.Restart);
+        ViewModel.OnFinishApp.Subscribe(DesktopApp.Shutdown);
+        ViewModel.OnRestartApp.Subscribe(DesktopApp.Restart);
     }
     
     #endregion Methods

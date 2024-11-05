@@ -14,21 +14,9 @@ namespace Caramelo.MvvmApp.Avalonia.Extensions;
 
 public static class MvvmAppBuilderExtension
 {
-    public static MvvmAppBuilder UseAvalonia<TApp, TView, TMainWindow>(this MvvmAppBuilder builder, Action<AppBuilder> configure)
-        where TApp : MvvmApplication<TView>, new()
-        where TView : RouterViewModel
-        where TMainWindow : class, IViewFor<TView>
-    {
-        builder.UseAvalonia<TApp, TView, TMainWindow>();
-
-        builder.Services.AddSingleton<IAvaloniaConfiguration>(_ => new AvaloniaConfiguration(configure));
-        
-        return builder;
-    }
-    
     public static MvvmAppBuilder UseAvalonia<TApp, TView, TMainWindow>(this MvvmAppBuilder builder)
         where TApp : MvvmApplication<TView>, new()
-        where TView : RouterViewModel
+        where TView : AppViewModel
         where TMainWindow : class, IViewFor<TView>
     {
         builder.Services.AddSingleton<IMvvmApplication, AvaloniaApplication<TApp, TView>>();
@@ -41,6 +29,12 @@ public static class MvvmAppBuilderExtension
         builder.Services.TryAddViewTransient<ConfirmDialogView, ConfirmDialogViewModel>();
         builder.Services.TryAddViewTransient<InputDialogView, InputDialogViewModel>();
         
+        return builder;
+    }
+
+    public static MvvmAppBuilder ConfigureAvalonia(this MvvmAppBuilder builder, Action<AppBuilder> configure)
+    {
+        builder.Services.AddSingleton<IAvaloniaConfiguration>(_ => new AvaloniaConfiguration(configure));
         return builder;
     }
 }

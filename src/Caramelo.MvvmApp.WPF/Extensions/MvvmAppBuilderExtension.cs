@@ -14,7 +14,7 @@ public static class MvvmAppBuilderExtension
 {
     public static MvvmAppBuilder UseWpf<TApp, TView, TMainWindow>(this MvvmAppBuilder builder)
         where TApp : MvvmApplication<TView>, IMvvmApplication
-        where TView : RouterViewModel
+        where TView : AppViewModel
         where TMainWindow : class, IViewFor<TView>
     {
         builder.Services.AddSingleton<IMvvmApplication, TApp>();

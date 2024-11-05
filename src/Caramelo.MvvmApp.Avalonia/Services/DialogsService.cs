@@ -142,6 +142,7 @@ public sealed class DialogsService : IDialogService
         where TParameter : DialogOptions
         where TResult : notnull
     {
+        window.Title = viewModel.Title;
         window.Bind(Window.TitleProperty, viewModel.WhenPropertyChanged(x => x.Title));
         window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
         

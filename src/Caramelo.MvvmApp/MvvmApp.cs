@@ -5,7 +5,7 @@ using Splat;
 
 namespace Caramelo.MvvmApp;
 
-public sealed class MvvmApp : MvvmDisposable
+public sealed class MvvmApp : IDisposable
 {
     #region Fields
 
@@ -22,6 +22,11 @@ public sealed class MvvmApp : MvvmDisposable
         Configuration = services.GetRequiredService<IConfiguration>();
         mvvmApplication = services.GetRequiredService<IMvvmApplication>();
         InitializeReactiveUi();
+    }
+    
+    ~MvvmApp()
+    {
+        Dispose();
     }
 
     #endregion Constructors
@@ -52,11 +57,15 @@ public sealed class MvvmApp : MvvmDisposable
     
     public void Run() => mvvmApplication.Run();
 
-    protected override void DisposeManaged()
+    public void Dispose()
     {
         (Configuration as IDisposable)?.Dispose();
         (Services as IDisposable)?.Dispose();
         mvvmApplication.Dispose();
+
+        // Take this object off the finalization queue and prevent finalization code for this
+        // object from executing a second time.
+        GC.SuppressFinalize(this);
     }
 
     #endregion

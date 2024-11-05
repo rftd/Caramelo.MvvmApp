@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using Caramelo.MvvmApp.Navigation;
 using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.Services.Impl;
@@ -7,7 +8,7 @@ using ReactiveUI;
 
 namespace Caramelo.MvvmApp.ViewModel;
 
-public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableViewModel
+public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableViewModel, IActivatableViewModel
 {
     #region Fields
 
@@ -15,7 +16,7 @@ public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableV
     private string title = string.Empty;
 
     #endregion Fields
-    
+
     #region Constructors
 
     protected MvvmViewModel(IServiceProvider service)
@@ -26,13 +27,12 @@ public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableV
         Dialogs = Service.GetRequiredService<IDialogService>();
         IsBusy = false;
 
-        ((NavigationService)Navigation).BeforeNavigate += async (_, args) =>
+        ((NavigationService)Navigation).BeforeNavigate.SelectMany(async args =>
         {
             var ret = await CanNavigateAsync(args.Mode, args.ViewModel);
-            if(ret) return;
-
-            args.Cancel = true;
-        };
+            args.Cancel = !ret;
+            return args;
+        }).Subscribe();
     }
 
     #endregion Constructors
@@ -42,6 +42,8 @@ public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableV
     string? IRoutableViewModel.UrlPathSegment => GetType().Name;
 
     IScreen IRoutableViewModel.HostScreen { get; } = null!;
+
+    ViewModelActivator IActivatableViewModel.Activator { get; } = new();
 
     protected INavigationService Navigation { get; }
 
@@ -68,7 +70,7 @@ public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableV
     #region Methods
 
     public virtual Task<bool> CanNavigateAsync(NavigationMode mode, IMvvmViewModel? viewModel) => Task.FromResult(true);
-    
+
     public virtual void ViewCreated()
     {
     }
@@ -92,7 +94,7 @@ public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableV
     public virtual void ViewDestroy(bool viewFinishing = true)
     {
     }
-    
+
     #endregion Methods
 }
 
@@ -104,7 +106,7 @@ public abstract class MvvmViewModel<TParameter> : MvvmViewModel, IMvvmViewModelP
 
     void IMvvmViewModelParameter.Initialize(object parameter)
     {
-        Initialize((TParameter) parameter);
+        Initialize((TParameter)parameter);
     }
 
     public abstract void Initialize(TParameter parameter);
@@ -127,7 +129,7 @@ public abstract class MvvmViewModel<TParameter, TResult> : MvvmResultViewModel<T
 
     void IMvvmViewModelParameter.Initialize(object parameter)
     {
-        Initialize((TParameter) parameter);
+        Initialize((TParameter)parameter);
     }
 
     public abstract void Initialize(TParameter parameter);

@@ -2,23 +2,23 @@
 
 public interface IMvvmViewModel
 {
-    public bool IsBusy { get; }
+    bool IsBusy { get; }
 
-    public string Title { get; }
+    string Title { get; }
 
-    public IServiceProvider Service { get; }
+    IServiceProvider Service { get; }
 
-    public void ViewCreated();
+    void ViewCreated();
 
-    public void ViewAppearing();
+    void ViewAppearing();
 
-    public void ViewAppeared();
+    void ViewAppeared();
 
-    public void ViewDisappearing();
+    void ViewDisappearing();
 
-    public void ViewDisappeared();
+    void ViewDisappeared();
 
-    public void ViewDestroy(bool viewFinishing = true);
+    void ViewDestroy(bool viewFinishing = true);
 }
 
 public interface IMvvmViewModelParameter : IMvvmViewModel

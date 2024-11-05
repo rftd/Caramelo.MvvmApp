@@ -38,11 +38,11 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.0.10" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+        <PackageReference Include="Avalonia" Version="11.2.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.0" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -55,5 +55,20 @@
     
     <ItemGroup>
       <ProjectReference Include="..\Caramelo.MvvmApp\Caramelo.MvvmApp.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="Dialogs\ConfirmDialogView.axaml.cs">
+        <DependentUpon>ConfirmDialogView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Dialogs\InputDialogView.axaml.cs">
+        <DependentUpon>InputDialogView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Dialogs\MessageDialogView.axaml.cs">
+        <DependentUpon>MessageDialogView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

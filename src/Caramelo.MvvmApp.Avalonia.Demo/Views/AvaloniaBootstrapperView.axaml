@@ -39,14 +39,7 @@
                                     VerticalAlignment="Top" HorizontalAlignment="Stretch"
                                     Height="56" Mode="PrimaryMid" ZIndex="1">
                     
-                    <Grid Margin="16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="24" />
-                            <ColumnDefinition Width="32" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="32" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                    <Grid Margin="16" ColumnDefinitions="24,32,*,32,Auto">
                         <ToggleButton Name="NavDrawerSwitch" Foreground="White"
                                       Width="32" Height="32" Padding="4">
                             <avalonia:MaterialIcon Kind="Menu" Width="24" Height="24" />

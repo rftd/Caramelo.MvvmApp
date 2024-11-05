@@ -11,5 +11,4 @@ public class DialogOptions
     public bool CanMinimize { get; set; }
 
     public bool CanMaximize { get; set; }
-
 }

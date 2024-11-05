@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Windows;
-using Caramelo.MvvmApp.Exceptions;
 using Caramelo.MvvmApp.ViewModel;
 using Caramelo.MvvmApp.WPF.Extensions;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +10,7 @@ namespace Caramelo.MvvmApp.WPF;
 /// <summary>
 ///     Represents the base class for applications based on the MVVM pattern.
 /// </summary>
-public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplication where TViewModel : RouterViewModel
+public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplication where TViewModel : AppViewModel
 {
     #region Private Fields
 
@@ -35,7 +34,7 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
     }
 
     #endregion Constructors
-
+    
     #region Protected Methods
 
     /// <summary>
@@ -93,19 +92,19 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
         // If this is the first instance of the application, the mutex is set and stored, so that it can be disposed of when this instance closes
         if (isFirstInstance) singleInstanceMutex = mutex;
 
-        var appBootstrapper = MvvmApp.Current.Services.GetRequiredService<TViewModel>();
+        var appViewModel = MvvmApp.Current.Services.GetRequiredService<TViewModel>();
         var viewLocator = MvvmApp.Current.Services.GetRequiredService<IViewLocator>();
-        var mainView = viewLocator.ResolveView(appBootstrapper);
-        Guard.Against<ApplicationException>(mainView == null, "View principal não encontrada.");
+        var mainView = viewLocator.ResolveView(appViewModel);
+        if(mainView == null) throw new ApplicationException("View principal não encontrada.");
         
         // Calls the on started method where the user is able to call his own code to set up the application
-        OnStarted(e.Args, isFirstInstance, appBootstrapper);
+        OnStarted(e.Args, isFirstInstance, appViewModel);
         
         var splashViewModel = MvvmApp.Current.Services.GetService<IMvvmSplashViewModel>();
         if (splashViewModel != null)
         {
             var splashView = viewLocator.ResolveView(splashViewModel);
-            Guard.Against<ApplicationException>(splashView == null, "SplashView não encontrada.");
+            if(splashView == null) throw new ApplicationException("SplashView não encontrada.");
 
             splashView!.ViewModel = splashViewModel;
             MainWindow = (Window)splashView;
@@ -113,7 +112,7 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
 
             splashViewModel.WhenFinished.Subscribe(_ =>
             {
-                mainView!.ViewModel = appBootstrapper;
+                mainView!.ViewModel = appViewModel;
                 MainWindow = (Window)mainView;
                 MainWindow.Show();
             
@@ -122,13 +121,13 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
         }
         else
         {
-            mainView!.ViewModel = appBootstrapper;
+            mainView!.ViewModel = appViewModel;
             MainWindow = (Window)mainView;
             MainWindow.Show();
         }
         
-        appBootstrapper.OnFinishApp.Subscribe(Shutdown);
-        appBootstrapper.OnRestartApp.Subscribe(this.Restart);
+        appViewModel.OnFinishApp.Subscribe(Shutdown);
+        appViewModel.OnRestartApp.Subscribe(this.Restart);
     }
 
     /// <summary>

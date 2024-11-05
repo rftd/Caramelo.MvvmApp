@@ -1,4 +1,6 @@
 ﻿using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +13,11 @@ namespace Caramelo.MvvmApp.Services.Impl;
 
 internal class NavigationService : INavigationService
 {
-    #region Events
+    #region Fields
 
-    public event EventHandler<MvvmNavigateEventArgs>? BeforeNavigate;
+    private Subject<MvvmNavigateEventArgs> beforeNavigate;
 
-    #endregion Events
+    #endregion Fields
     
     #region Fields
 
@@ -31,6 +33,7 @@ internal class NavigationService : INavigationService
         this.service = service;
         Router = new RoutingState();
         tcsResults = new ConditionalWeakTable<MvvmViewModel, TaskCompletionSource<object>?>();
+        beforeNavigate = new Subject<MvvmNavigateEventArgs>();
     }
 
     #endregion Constructors
@@ -38,6 +41,8 @@ internal class NavigationService : INavigationService
     #region Properties
 
     internal RoutingState Router { get; }
+
+    public IObservable<MvvmNavigateEventArgs> BeforeNavigate => beforeNavigate.AsObservable();
 
     #endregion Properties
 
@@ -48,7 +53,7 @@ internal class NavigationService : INavigationService
         var view = service.GetRequiredService<TModel>();
         
         var args = new MvvmNavigateEventArgs(view, NavigationMode.Show);
-        BeforeNavigate.Raise(this, args);
+        beforeNavigate.OnNext(args);
 
         return args.Cancel ? Task.CompletedTask : Router.Navigate.Execute(view).ToTask();
     }
@@ -60,7 +65,7 @@ internal class NavigationService : INavigationService
         var view = service.GetRequiredService<TModel>();
         
         var args = new MvvmNavigateEventArgs(view, NavigationMode.Show);
-        BeforeNavigate.Raise(this, args);
+        beforeNavigate.OnNext(args);
 
         if (args.Cancel)
             return default;
@@ -85,7 +90,7 @@ internal class NavigationService : INavigationService
     {
         var view = service.GetRequiredService<TModel>();
         var args = new MvvmNavigateEventArgs(view, NavigationMode.Show);
-        BeforeNavigate.Raise(this, args);
+        beforeNavigate.OnNext(args);
 
         if (args.Cancel)
             return Task.CompletedTask;
@@ -99,7 +104,7 @@ internal class NavigationService : INavigationService
     {
         var view = service.GetRequiredService<TModel>();
         var args = new MvvmNavigateEventArgs(view, NavigationMode.Show);
-        BeforeNavigate.Raise(this, args);
+        beforeNavigate.OnNext(args);
 
         if (args.Cancel)
             return default;
@@ -134,7 +139,7 @@ internal class NavigationService : INavigationService
     public Task GoBackAsync<TModel>(TModel viewModel) where TModel : MvvmViewModel
     {
         var args = new MvvmNavigateEventArgs(viewModel, NavigationMode.Close);
-        BeforeNavigate.Raise(this, args);
+        beforeNavigate.OnNext(args);
         
         return args.Cancel ? Task.CompletedTask : Router.NavigateBack.Execute(Unit.Default).ToTask();
     }
@@ -143,7 +148,7 @@ internal class NavigationService : INavigationService
         where TParameter : notnull where TResult : notnull
     {
         var args = new MvvmNavigateEventArgs(viewModel, NavigationMode.Close);
-        BeforeNavigate.Raise(this, args);
+        beforeNavigate.OnNext(args);
         
         if (args.Cancel)
             return Task.CompletedTask;
@@ -166,7 +171,7 @@ internal class NavigationService : INavigationService
     public Task GoBackAsync<TResult>(MvvmResultViewModel<TResult> viewModel, TResult result) where TResult : notnull
     {
         var args = new MvvmNavigateEventArgs(viewModel, NavigationMode.Close);
-        BeforeNavigate.Raise(this, args);
+        beforeNavigate.OnNext(args);
         
         if (args.Cancel)
             return Task.CompletedTask;

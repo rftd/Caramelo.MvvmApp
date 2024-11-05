@@ -8,7 +8,7 @@ namespace Caramelo.MvvmApp.Avalonia;
 
 internal class AvaloniaApplication<TApp, TView> : IMvvmApplication
     where TApp : MvvmApplication<TView>, new()
-    where TView : RouterViewModel
+    where TView : AppViewModel
 {
     public int Run()
     {
