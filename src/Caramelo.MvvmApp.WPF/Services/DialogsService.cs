@@ -29,39 +29,45 @@ public sealed class DialogsService : IDialogService
     }
 
     #endregion Constructors
-    
+
     #region Methods
 
     public Task ShowAsync(string title, string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = title, Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = title, Mensagem = message });
     }
 
     public Task InfoAsync(string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = "Informação", Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = "Informação", Mensagem = message });
     }
 
     public Task WarnAsync(string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = "Aviso", Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = "Aviso", Mensagem = message });
     }
 
     public Task ErroAsync(string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = "Erro", Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = "Erro", Mensagem = message });
     }
 
     public Task<string> InputAsync(string title, string message)
     {
-        return ShowAsync<InputDialogViewModel, string, DialogMensageOptions>(new DialogMensageOptions { Titulo = title, Mensagem = message });
+        return ShowAsync<InputDialogViewModel, string, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = title, Mensagem = message });
     }
 
     public Task<bool> ConfirmAsync(string title, string message)
     {
-        return ShowAsync<ConfirmDialogViewModel, bool, DialogMensageOptions>(new DialogMensageOptions { Titulo = title, Mensagem = message });
+        return ShowAsync<ConfirmDialogViewModel, bool, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = title, Mensagem = message });
     }
-    
+
     public Task ShowAsync<TViewModel>(DialogOptions options) where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>
     {
         return ShowAsync<TViewModel, Unit, DialogOptions>(options);
@@ -77,12 +83,11 @@ public sealed class DialogsService : IDialogService
         where TParameter : DialogOptions
         where TResult : notnull
     {
-
         var model = service.GetRequiredService<TViewModel>();
         var viewLocator = service.GetRequiredService<IViewLocator>();
         var viewFor = viewLocator.ResolveView(model);
         if (viewFor == null) throw new ApplicationException("View Não cadastrada.");
-        
+
         viewFor.ViewModel = model;
         var window = viewFor switch
         {
@@ -90,16 +95,16 @@ public sealed class DialogsService : IDialogService
             Window view => view,
             _ => throw new ApplicationException("View Não Suportada.")
         };
-        
+
         model.Initialize(parameter);
         model.WhenPropertyChanged(x => x.CanClose)
             .Subscribe(x =>
             {
-                if(!x.Value) return;
-                
+                if (!x.Value) return;
+
                 window.Close();
             });
-        
+
         ConfigureWindow<TViewModel, TParameter, TResult>(window, model, parameter);
         window.ShowDialog();
 
@@ -129,27 +134,27 @@ public sealed class DialogsService : IDialogService
         return window;
     }
 
-    private static void ConfigureWindow<TViewModel, TParameter, TResult>(Window window, TViewModel viewModel, TParameter parameter)
+    private static void ConfigureWindow<TViewModel, TParameter, TResult>(Window window, TViewModel viewModel,
+        TParameter parameter)
         where TViewModel : MvvmDialogViewModel<TParameter, TResult>
         where TParameter : DialogOptions
         where TResult : notnull
     {
-        window.SetBinding(Window.TitleProperty, new Binding("Title"){ Source = viewModel });
-        window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
-        window.SourceInitialized += (_, _) =>
-        {
-            if (!parameter.CanMinimize)
-                window.HideMinimize();
-
-            if (!parameter.CanMaximize)
-                window.HideMaximize();
-        };
-
-            try
+        try
         {
             window.Owner = Application.Current.MainWindow;
             window.Icon = Application.Current.MainWindow?.Icon;
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.SetBinding(Window.TitleProperty, new Binding("Title") { Source = viewModel });
+            window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
+            window.SourceInitialized += (_, _) =>
+            {
+                if (!parameter.CanMinimize)
+                    window.HideMinimize();
+
+                if (!parameter.CanMaximize)
+                    window.HideMaximize();
+            };
         }
         catch (Exception)
         {
@@ -157,7 +162,5 @@ public sealed class DialogsService : IDialogService
         }
     }
 
-    
-    
     #endregion Methods
 }

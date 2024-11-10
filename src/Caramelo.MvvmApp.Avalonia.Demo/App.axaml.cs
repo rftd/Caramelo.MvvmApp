@@ -11,7 +11,7 @@ public partial class App : DemoApp
     }
 }
 
-public class DemoApp : MvvmApplication<AppBootstrapperViewModel>
+public class DemoApp : MvvmApplication<DemoAppViewModel>
 {
     
 }

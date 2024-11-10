@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
+using Caramelo.MvvmApp.Avalonia.Commom;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -10,8 +10,8 @@
         <FileVersion>1.0.0</FileVersion>
         <Authors>RFTD</Authors>
         <LangVersion>default</LangVersion>
-        <Version>1.0.0-alpha.4</Version>
-        <Title>MvvmApp.ReactiveUI.WPF</Title>
+        <Version>1.0.0-beta.1</Version>
+        <Title>Caramelo.MvvmApp.WPF</Title>
         <PackageProjectUrl>https://github.com/rftd/Caramelo.MvvmApp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/rftd/Caramelo.MvvmApp</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
@@ -32,7 +32,10 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="ReactiveUI" Version="20.1.63" />
-        <PackageReference Include="ReactiveUI.SourceGenerators" Version="1.1.31" />
+        <PackageReference Include="ReactiveUI.SourceGenerators" Version="2.0.17">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="ReactiveUI.WPF" Version="20.1.63" />
     </ItemGroup>
 

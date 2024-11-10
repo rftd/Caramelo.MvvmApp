@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia;
 
-namespace Caramelo.MvvmApp.Avalonia;
+namespace Caramelo.MvvmApp.Avalonia.Commom;
 
 internal class AvaloniaConfiguration : IAvaloniaConfiguration
 {

@@ -5,6 +5,8 @@
       <map>
         <entry key="Caramelo.MvvmApp.Avalonia.Demo/App.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
         <entry key="Caramelo.MvvmApp.Avalonia.Demo/Views/AvaloniaBootstrapperView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
+        <entry key="Caramelo.MvvmApp.Avalonia.Demo/Views/DemoAppView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
+        <entry key="Caramelo.MvvmApp.Avalonia.Demo/Views/DemoView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
         <entry key="Caramelo.MvvmApp.Avalonia/Dialogs/ConfirmDialogView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
         <entry key="Caramelo.MvvmApp.Avalonia/Dialogs/InputDialogView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />
         <entry key="Caramelo.MvvmApp.Avalonia/Dialogs/MessageDialogView.axaml" value="Caramelo.MvvmApp.Avalonia.Demo/Caramelo.MvvmApp.Avalonia.Demo.csproj" />

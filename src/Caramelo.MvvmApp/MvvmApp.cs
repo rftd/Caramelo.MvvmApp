@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Splat;
+using Splat.Microsoft.Extensions.Logging;
 
 namespace Caramelo.MvvmApp;
 
@@ -50,7 +52,7 @@ public sealed class MvvmApp : IDisposable
     private void InitializeReactiveUi()
     {
         Locator.CurrentMutable.InitializeReactiveUI();
-        Locator.CurrentMutable.RegisterLazySingleton(() => Services.GetRequiredService<IViewLocator>());
+        Locator.CurrentMutable.UseMicrosoftExtensionsLoggingWithWrappingFullLogger(Services.GetRequiredService<ILoggerFactory>());
     }
 
     public static MvvmAppBuilder CreateBuilder() => new();

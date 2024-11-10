@@ -15,12 +15,7 @@ internal class NavigationService : INavigationService
 {
     #region Fields
 
-    private Subject<MvvmNavigateEventArgs> beforeNavigate;
-
-    #endregion Fields
-    
-    #region Fields
-
+    private readonly Subject<MvvmNavigateEventArgs> beforeNavigate;
     private readonly ConditionalWeakTable<MvvmViewModel, TaskCompletionSource<object>?> tcsResults;
     private readonly IServiceProvider service;
 

@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReactiveUI;
 
 namespace Caramelo.MvvmApp.View;
 
@@ -24,7 +25,15 @@ internal sealed class MvvmViewLocator : IViewLocator
     public IViewFor? ResolveView<T>(T? viewModel, string? contract = null)
     {
         if (viewModel == null) return null;
-        var view = (IViewFor?)service.GetService(typeof(IViewFor<>).MakeGenericType(viewModel!.GetType()));
+
+        IViewFor? view;
+        var type = typeof(IViewFor<>).MakeGenericType(viewModel.GetType());
+        
+        if(contract is not null && service is IKeyedServiceProvider keyedServiceProvider)
+            view = (IViewFor?)keyedServiceProvider.GetKeyedService(type, contract);
+        else
+            view = (IViewFor?)service.GetService(type);
+        
         return view;
     }
 

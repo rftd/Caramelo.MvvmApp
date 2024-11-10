@@ -1,6 +1,6 @@
 ﻿using Caramelo.MvvmApp.Demo.Core.ViewModels;
+using Caramelo.MvvmApp.WPF.Demo.Views;
 using Caramelo.MvvmApp.WPF.Extensions;
-using WpfAppBootstrapperView = Caramelo.MvvmApp.WPF.Demo.Views.WpfAppBootstrapperView;
 
 namespace Caramelo.MvvmApp.WPF.Demo;
 
@@ -10,7 +10,7 @@ public class Program
     private static void Main(string[] args)
     {
         var builder = MvvmApp.CreateBuilder();
-        builder.UseWpf<App, AppBootstrapperViewModel, WpfAppBootstrapperView>();
+        builder.UseWpf<App, DemoAppViewModel, DemoAppView>();
         
         var app = builder.Build();
         app.Run();

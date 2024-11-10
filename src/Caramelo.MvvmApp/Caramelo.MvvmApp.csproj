@@ -8,8 +8,8 @@
         <FileVersion>1.0.0</FileVersion>
         <LangVersion>Default</LangVersion>
         <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
-        <Version>1.0.0-alpha.4</Version>
-        <Title>MvvmApp.ReactiveUI</Title>
+        <Version>1.0.0-beta.1</Version>
+        <Title>Caramelo.MvvmApp</Title>
         <PackageProjectUrl>https://github.com/rftd/Caramelo.MvvmApp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/rftd/Caramelo.MvvmApp</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
@@ -42,7 +42,12 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="8.0.1" />
-        <PackageReference Include="ReactiveUI.SourceGenerators" Version="1.1.31" />
+        <PackageReference Include="ReactiveUI.SourceGenerators" Version="2.0.17">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="15.2.22" />
+        <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="15.2.22" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,12 +1,12 @@
-﻿<controls:MvvmWindow x:TypeArguments="view:AppBootstrapperViewModel" x:Class="Caramelo.MvvmApp.WPF.Demo.Views.WpfAppBootstrapperView"
+﻿<view1:MvvmWindow x:TypeArguments="view:DemoAppViewModel" x:Class="Caramelo.MvvmApp.WPF.Demo.Views.DemoAppView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:view="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
-                 xmlns:controls="clr-namespace:Caramelo.MvvmApp.WPF.Controls;assembly=Caramelo.MvvmApp.WPF"
+                 xmlns:view1="clr-namespace:Caramelo.MvvmApp.WPF.View;assembly=Caramelo.MvvmApp.WPF"
                  mc:Ignorable="d" Height="450" Width="800">
     <Grid>
         
     </Grid>
-</controls:MvvmWindow>
+</view1:MvvmWindow>

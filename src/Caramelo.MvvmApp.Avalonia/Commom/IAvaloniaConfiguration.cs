@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 
-namespace Caramelo.MvvmApp.Avalonia;
+namespace Caramelo.MvvmApp.Avalonia.Commom;
 
 internal interface IAvaloniaConfiguration
 {

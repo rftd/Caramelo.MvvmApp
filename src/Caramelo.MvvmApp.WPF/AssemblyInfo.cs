@@ -12,4 +12,4 @@ using System.Windows.Markup;
 
 [assembly: XmlnsPrefix("https://github.com/rftd/Caramelo.MvvmApp", "caramelo")]
 [assembly: XmlnsDefinition("https://github.com/rftd/Caramelo.MvvmApp", "Caramelo.MvvmApp.WPF")]
-[assembly: XmlnsDefinition("https://github.com/rftd/Caramelo.MvvmApp", "Caramelo.MvvmApp.WPF.Controls")]
+[assembly: XmlnsDefinition("https://github.com/rftd/Caramelo.MvvmApp", "Caramelo.MvvmApp.WPF.View")]

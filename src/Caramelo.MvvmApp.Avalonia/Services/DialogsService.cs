@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data;
+using Avalonia.Platform;
 using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.ViewModel;
@@ -142,12 +144,11 @@ public sealed class DialogsService : IDialogService
         where TParameter : DialogOptions
         where TResult : notnull
     {
-        window.Title = viewModel.Title;
-        window.Bind(Window.TitleProperty, viewModel.WhenPropertyChanged(x => x.Title));
-        window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
-        
         try
         {
+            window.Bind(Window.TitleProperty, new Binding("Title") { Source = viewModel });
+            window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
+            
             window.Icon = DesktopApp.MainWindow?.Icon;
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }

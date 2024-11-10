@@ -1,6 +1,6 @@
 ﻿using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.ViewModel;
-using Caramelo.MvvmApp.WPF.Controls;
+using Caramelo.MvvmApp.WPF.View;
 
 namespace Caramelo.MvvmApp.WPF.Dialogs;
 

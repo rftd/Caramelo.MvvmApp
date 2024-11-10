@@ -1,4 +1,4 @@
-<mvvm:MvvmWindow x:TypeArguments="vm:AppBootstrapperViewModel" xmlns="https://github.com/avaloniaui"
+<caramelo:MvvmWindow x:TypeArguments="vm:DemoAppViewModel" xmlns="https://github.com/avaloniaui"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,14 +6,14 @@
                  xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
                  xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
                  xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-                 xmlns:mvvm="https://github.com/rftd/Caramelo.MvvmApp"
+                 xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
                  mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                 x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.AvaloniaBootstrapperView"
+                 x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DemoAppView"
                  Icon="/Assets/avalonia-logo.ico"
                  Title="ReactiveUI.Mvvm.Avalonia.Demo">
 
     <Design.DataContext>
-        <vm:AppBootstrapperViewModel/>
+        <vm:DemoAppViewModel/>
     </Design.DataContext>
     
     <controls:SnackbarHost HostName="Root">
@@ -48,11 +48,11 @@
                     </Grid>
                 </controls:ColorZone>
                 
-                <rxui:RoutedViewHost DockPanel.Dock="Top" Router="{Binding Router}"
-                                     HorizontalContentAlignment="Stretch"
-                                     VerticalContentAlignment="Stretch" />
+                <caramelo:TabbedRoutedViewHost DockPanel.Dock="Top" Router="{Binding Router}"
+                                               HorizontalContentAlignment="Stretch"
+                                               VerticalContentAlignment="Stretch" />
             
             </DockPanel>
         </controls:NavigationDrawer>
     </controls:SnackbarHost>
-</mvvm:MvvmWindow>
+</caramelo:MvvmWindow>

@@ -17,7 +17,7 @@ namespace Caramelo.MvvmApp.Avalonia.Demo
         public static void Main()
         {
             var builder = MvvmApp.CreateBuilder();
-            builder.UseAvalonia<App, AppBootstrapperViewModel, AvaloniaBootstrapperView>()
+            builder.UseAvalonia<App, DemoAppViewModel, DemoAppView>()
                 .ConfigureAvalonia(x => x.With(new X11PlatformOptions
                 {
                     EnableMultiTouch = true,
@@ -26,7 +26,7 @@ namespace Caramelo.MvvmApp.Avalonia.Demo
                 }));
 
             // Adiciona as views e os model
-            builder.Services.AddViewAndModelFromAssembly();
+            builder.Services.AddViewTransient<DemoView, DemoViewModel>();
 
             var app = builder.Build();
             app.Run();

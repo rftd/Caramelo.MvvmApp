@@ -6,16 +6,25 @@ namespace Caramelo.MvvmApp.WPF.Extensions;
 
 internal static class WindowExtensions
 {
-    // from winuser.h
-    private const int GWL_STYLE      = -16,
-        WS_MAXIMIZEBOX = 0x10000,
-        WS_MINIMIZEBOX = 0x20000;
+    #region Fields
+
+    private const int GWL_STYLE = -16;
+    private const int WS_MAXIMIZEBOX = 0x10000;
+    private const int WS_MINIMIZEBOX = 0x20000;
+
+    #endregion Fields
+
+    #region Imports
 
     [DllImport("user32.dll")]
     private static extern int GetWindowLong(IntPtr hwnd, int index);
 
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hwnd, int index, int value);
+
+    #endregion Imports
+
+    #region Methods
 
     public static void HideMinimize(this Window window)
     {
@@ -27,9 +36,11 @@ internal static class WindowExtensions
     
     public static void HideMaximize(this Window window)
     {
-        var hwnd = new System.Windows.Interop.WindowInteropHelper(window).Handle;
+        var hwnd = new WindowInteropHelper(window).Handle;
         var currentStyle = GetWindowLong(hwnd, GWL_STYLE);
 
         SetWindowLong(hwnd, GWL_STYLE, currentStyle & ~WS_MAXIMIZEBOX);
     }
+
+    #endregion Methods
 }

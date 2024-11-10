@@ -1,14 +1,15 @@
 ﻿using System.Reactive;
 using Caramelo.MvvmApp.Dialogs;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Caramelo.MvvmApp.ViewModel;
 
-public sealed class ConfirmDialogViewModel : MvvmDialogViewModel<DialogMensageOptions, bool>
+public sealed partial class ConfirmDialogViewModel : MvvmDialogViewModel<DialogMensageOptions, bool>
 {
     #region Fields
 
-    private string message = string.Empty;
+    [Reactive] private string message = string.Empty;
 
     #endregion Fields
 
@@ -27,12 +28,6 @@ public sealed class ConfirmDialogViewModel : MvvmDialogViewModel<DialogMensageOp
     public ReactiveCommand<Unit, Unit> YesCommand { get; }
     
     public ReactiveCommand<Unit, Unit> NoCommand { get; }
-    
-    public string Message
-    {
-        get => message;
-        set => this.RaiseAndSetIfChanged(ref message, value);
-    }
 
     #endregion Properties
 

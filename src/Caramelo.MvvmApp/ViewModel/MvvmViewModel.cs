@@ -5,15 +5,16 @@ using Caramelo.MvvmApp.Services.Impl;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Caramelo.MvvmApp.ViewModel;
 
-public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableViewModel, IActivatableViewModel
+public abstract partial class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableViewModel, IActivatableViewModel
 {
     #region Fields
 
-    private bool isBusy;
-    private string title = string.Empty;
+    [Reactive] private bool isBusy;
+    [Reactive] private string title = string.Empty;
 
     #endregion Fields
 
@@ -52,18 +53,6 @@ public abstract class MvvmViewModel : ReactiveObject, IMvvmViewModel, IRoutableV
     public IDialogService Dialogs { get; }
 
     public ILogger Log { get; }
-
-    public bool IsBusy
-    {
-        get => isBusy;
-        set => this.RaiseAndSetIfChanged(ref isBusy, value);
-    }
-
-    public string Title
-    {
-        get => title;
-        set => this.RaiseAndSetIfChanged(ref title, value);
-    }
 
     #endregion Properties
 

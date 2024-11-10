@@ -7,6 +7,7 @@
         <TrimMode>copyused</TrimMode>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationIcon>Assets\avalonia-logo.ico</ApplicationIcon>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
     
     <ItemGroup>

@@ -2,7 +2,7 @@
 using Caramelo.MvvmApp.ViewModel;
 using ReactiveUI;
 
-namespace Caramelo.MvvmApp.Avalonia.Controls;
+namespace Caramelo.MvvmApp.Avalonia;
 
 public class MvvmWindow<TViewModel> : Window, IViewFor<TViewModel> 
     where TViewModel : ReactiveObject, IMvvmViewModel

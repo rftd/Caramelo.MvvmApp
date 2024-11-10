@@ -3,7 +3,7 @@ using System.Windows;
 using Caramelo.MvvmApp.ViewModel;
 using ReactiveUI;
 
-namespace Caramelo.MvvmApp.WPF.Controls;
+namespace Caramelo.MvvmApp.WPF.View;
 
 public class MvvmWindow<TViewModel> : Window, IViewFor<TViewModel> 
     where TViewModel : ReactiveObject, IMvvmViewModel

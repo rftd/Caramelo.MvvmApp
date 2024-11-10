@@ -1,0 +1,10 @@
+﻿<caramelo:MvvmUserControl x:TypeArguments="vm:DemoViewModel" xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DemoView">
+    Welcome to Avalonia!
+</caramelo:MvvmUserControl>
