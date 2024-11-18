@@ -25,9 +25,10 @@ public sealed class MvvmAppBuilder
 
     internal MvvmAppBuilder()
     {
-        Services = new ServiceCollection();
-
         Configuration = new ConfigurationManager();
+        
+        Services = new ServiceCollection();
+        Services.UseMicrosoftDependencyResolver();
         Services.AddSingleton<IConfiguration>(Configuration);
         
         InitializeNavigation();
@@ -101,7 +102,6 @@ public sealed class MvvmAppBuilder
     
     public MvvmApp Build()
     {
-        Services.UseMicrosoftDependencyResolver();
         return new MvvmApp(Services.BuildServiceProvider());
     }
 

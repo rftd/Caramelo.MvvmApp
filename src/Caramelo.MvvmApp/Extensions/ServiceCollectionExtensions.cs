@@ -8,27 +8,26 @@ namespace Caramelo.MvvmApp.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddViewAndModelFromAssembly(this IServiceCollection services)
+    public static IServiceCollection AddViewAndModelFromAssembly(this IServiceCollection services, 
+        params Assembly[] extraAssemblies)
     {
-        return services.AddViewAndModelFromAssembly(Assembly.GetExecutingAssembly());
-    }
-    
-    public static IServiceCollection AddViewAndModelFromAssembly(this IServiceCollection services, Assembly assembly)
-    {
+        var assemblies = extraAssemblies.Concat([Assembly.GetEntryAssembly()])
+            .Where(x => x is not null).Cast<Assembly>().ToArray();
         var viewModel = typeof(IMvvmViewModel);
         var routerModel = typeof(AppViewModel);
-        var viewModels = assembly.GetTypes()
-            .Where(type => viewModel.IsAssignableFrom(type) && !routerModel.IsAssignableFrom(type) && 
-                        type is {IsAbstract: false, IsInterface: false})
+        var viewModels = assemblies.SelectMany(x => x.DefinedTypes)
+            .Where(type => viewModel.IsAssignableFrom(type) && 
+                           !routerModel.IsAssignableFrom(type) &&
+                           type is {IsAbstract: false, IsInterface: false})
             .ToArray();
 
         foreach (var model in viewModels)
         {
             var viewType = typeof(IViewFor<>).MakeGenericType(model);
-            var view = assembly.GetTypes().SingleOrDefault(x => viewType.IsAssignableFrom(x));
+            var view = assemblies.SelectMany(x => x.DefinedTypes).SingleOrDefault(x => viewType.IsAssignableFrom(x));
             if(view == null) continue;
 
-            services.AddTransient(model).AddTransient(view);
+            services.AddTransient(model).AddTransient(viewType, view);
         }
         
         return services;

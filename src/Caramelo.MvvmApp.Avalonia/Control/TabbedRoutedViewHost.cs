@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Caramelo.MvvmApp.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveMarbles.ObservableEvents;
 using ReactiveUI;
 using Splat;
@@ -19,7 +20,7 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
 
     public static readonly StyledProperty<RoutingState?> RouterProperty =
         AvaloniaProperty.Register<RoutedViewHost, RoutingState?>(nameof(Router));
-    
+
     public static readonly StyledProperty<object?> DefaultContentProperty =
         ViewModelViewHost.DefaultContentProperty.AddOwner<RoutedViewHost>();
 
@@ -42,9 +43,9 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
                 .Merge(routerRemoved)
                 .Where(x => x is NotifyCollectionChangedEventArgs
                 {
-                    Action: NotifyCollectionChangedAction.Reset or 
-                            NotifyCollectionChangedAction.Add or
-                            NotifyCollectionChangedAction.Remove
+                    Action: NotifyCollectionChangedAction.Reset or
+                    NotifyCollectionChangedAction.Add or
+                    NotifyCollectionChangedAction.Remove
                 })
                 .Subscribe(x => NavigateToViewModel(x as NotifyCollectionChangedEventArgs))
                 .DisposeWith(disposables);
@@ -60,13 +61,13 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
         get => GetValue(RouterProperty);
         set => SetValue(RouterProperty, value);
     }
-    
+
     public object? DefaultContent
     {
         get => GetValue(DefaultContentProperty);
         set => SetValue(DefaultContentProperty, value);
     }
-    
+
     public IViewLocator? ViewLocator { get; set; }
 
     #endregion Properties
@@ -81,7 +82,7 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
             Content = DefaultContent;
             return;
         }
-        
+
         var viewModel = (IMvvmViewModel?)(eventArgs?.NewItems?[0] ?? eventArgs?.OldItems?[0]);
         if (viewModel == null || eventArgs == null)
         {
@@ -95,18 +96,18 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
             case NotifyCollectionChangedAction.Add:
                 AddTab(viewModel);
                 break;
-            
+
             case NotifyCollectionChangedAction.Remove:
                 RemoveTab(viewModel);
                 break;
-            
+
             case NotifyCollectionChangedAction.Reset:
-                if(Content is TabControl tabControl)
+                if (Content is TabControl tabControl)
                     tabControl.Items.Clear();
-            
+
                 Content = DefaultContent;
                 break;
-            
+
             default:
                 Content = DefaultContent;
                 break;
@@ -115,16 +116,17 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
 
     private void AddTab(IMvvmViewModel viewModel)
     {
-        var viewLocator = ViewLocator ?? global::ReactiveUI.ViewLocator.Current;
+        var viewLocator = ViewLocator ?? MvvmApp.Current.Services.GetRequiredService<IViewLocator>();
         var viewInstance = viewLocator.ResolveView(viewModel);
         if (viewInstance == null)
         {
-            this.Log().Warn($"Couldn't find view for '{viewModel}'. Is it registered? Falling back to default content.");
+            this.Log().Warn(
+                $"Couldn't find view for '{viewModel}'. Is it registered? Falling back to default content.");
             return;
         }
 
         viewInstance.ViewModel = viewModel;
-        
+
         var tabControl = Content as TabControl ?? new TabControl
         {
             HorizontalContentAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch,
@@ -135,12 +137,11 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
             Header = viewModel.Title,
             Content = viewInstance,
         });
-        
+
         tabControl.SelectedIndex = tabControl.Items.Count - 1;
-        
-        if(Content is not TabControl)
+
+        if (Content is not TabControl)
             Content = tabControl;
-        
     }
 
     private void RemoveTab(IMvvmViewModel viewModel)

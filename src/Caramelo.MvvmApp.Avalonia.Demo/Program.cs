@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using Caramelo.MvvmApp.Avalonia.Demo.Views;
@@ -24,10 +25,9 @@ namespace Caramelo.MvvmApp.Avalonia.Demo
                     UseDBusMenu = true,
                     EnableIme = true
                 }));
-
+            
             // Adiciona as views e os model
-            builder.Services.AddViewTransient<DemoView, DemoViewModel>();
-
+            builder.Services.AddViewAndModelFromAssembly(typeof(DemoViewModel).Assembly);
             var app = builder.Build();
             app.Run();
         }
