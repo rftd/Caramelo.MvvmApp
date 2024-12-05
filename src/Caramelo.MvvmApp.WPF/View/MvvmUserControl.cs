@@ -20,17 +20,17 @@ public abstract class MvvmUserControl<TViewModel> : UserControl, IViewFor<TViewM
     {
         Loaded += (_, _) =>
         {
-            ViewModel.ViewAppearing();
-            ViewModel.ViewAppeared();
+            ViewModel?.ViewAppearing();
+            ViewModel?.ViewAppeared();
         };
 
         Unloaded += (_, _) =>
         {
             if (unloaded) return;
 
-            ViewModel.ViewDisappearing();
-            ViewModel.ViewDisappeared();
-            ViewModel.ViewDestroy();
+            ViewModel?.ViewDisappearing();
+            ViewModel?.ViewDisappeared();
+            ViewModel?.ViewDestroy();
             unloaded = true;
         };
     }
@@ -40,17 +40,17 @@ public abstract class MvvmUserControl<TViewModel> : UserControl, IViewFor<TViewM
     #region Properties
 
     /// <inheritdoc />
-    public TViewModel ViewModel
+    public TViewModel? ViewModel
     {
         get => (TViewModel) DataContext;
         set => DataContext = value;
     }
 
     /// <inheritdoc />
-    object IViewFor.ViewModel
+    object? IViewFor.ViewModel
     {
         get => ViewModel;
-        set => ViewModel = (TViewModel) value;
+        set => ViewModel = (TViewModel?) value;
     }
 
     public bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(this);

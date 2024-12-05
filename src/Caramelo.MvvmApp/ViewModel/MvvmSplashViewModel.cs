@@ -1,6 +1,8 @@
 ﻿using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 
 namespace Caramelo.MvvmApp.ViewModel;
@@ -19,6 +21,7 @@ public abstract class MvvmSplashViewModel : ReactiveObject, IMvvmSplashViewModel
     {
         Service = service;
         whenFinishedSubject = new Subject<Unit>();
+        Log = Service.GetRequiredService<ILogger<MvvmViewModel>>();
     }
 
     #endregion Constructors
@@ -30,6 +33,8 @@ public abstract class MvvmSplashViewModel : ReactiveObject, IMvvmSplashViewModel
     string IMvvmViewModel.Title { get; } = "";
     
     public IServiceProvider Service { get; }
+    
+    public ILogger Log { get; }
 
     public IObservable<Unit> WhenFinished => whenFinishedSubject.AsObservable();
     
@@ -54,8 +59,15 @@ public abstract class MvvmSplashViewModel : ReactiveObject, IMvvmSplashViewModel
 
     public virtual async void ViewAppeared()
     {
-        await Task.Delay(1000);
-        CloseSplash();
+        try
+        {
+            await Task.Delay(1000);
+            CloseSplash();
+        }
+        catch (Exception e)
+        {
+            Log.LogError(e, "An exception occured during splash appearing");
+        }
     }
 
     public virtual void ViewDisappearing()

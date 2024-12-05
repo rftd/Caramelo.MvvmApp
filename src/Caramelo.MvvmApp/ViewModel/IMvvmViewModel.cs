@@ -1,6 +1,8 @@
-﻿namespace Caramelo.MvvmApp.ViewModel;
+﻿using ReactiveUI;
 
-public interface IMvvmViewModel
+namespace Caramelo.MvvmApp.ViewModel;
+
+public interface IMvvmViewModel : IActivatableView
 {
     bool IsBusy { get; }
 

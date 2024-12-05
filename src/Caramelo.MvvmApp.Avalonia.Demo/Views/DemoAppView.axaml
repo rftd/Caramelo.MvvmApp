@@ -38,7 +38,6 @@
                 <controls:ColorZone DockPanel.Dock="Top"
                                     VerticalAlignment="Top" HorizontalAlignment="Stretch"
                                     Height="56" Mode="PrimaryMid" ZIndex="1">
-                    
                     <Grid Margin="16" ColumnDefinitions="24,32,*,32,Auto">
                         <ToggleButton Name="NavDrawerSwitch" Foreground="White"
                                       Width="32" Height="32" Padding="4">

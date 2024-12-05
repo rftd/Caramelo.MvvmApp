@@ -20,6 +20,7 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <NoWarn>NU1701</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(CI)' == 'true'">

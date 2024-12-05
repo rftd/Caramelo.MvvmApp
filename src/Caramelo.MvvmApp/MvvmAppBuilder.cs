@@ -78,6 +78,7 @@ public sealed class MvvmAppBuilder
     {
         Services.AddSingleton<INavigationService, NavigationService>();
         Services.AddSingleton<IViewLocator, MvvmViewLocator>();
+        Services.AddSingleton<IRouterService, RouterService>();
     }
     
     private void InitializeLog()

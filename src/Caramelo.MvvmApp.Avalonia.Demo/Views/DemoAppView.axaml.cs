@@ -9,11 +9,7 @@ namespace Caramelo.MvvmApp.Avalonia.Demo.Views
         public DemoAppView()
         {
             InitializeComponent();
-
-            this.WhenActivated(disposable =>
-            {
-                ViewModel.OpenDemoViewCommand.Execute().Subscribe();
-            });
+            this.WhenActivated(_ => ViewModel?.OpenDemoViewCommand.Execute().Subscribe());
         }
     }
 }

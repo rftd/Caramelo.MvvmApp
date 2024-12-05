@@ -8,7 +8,8 @@
         <UseWPF>true</UseWPF>
         <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
         <StartupObject>Caramelo.MvvmApp.WPF.Demo.Program</StartupObject>        
-        <IsPackable>false</IsPackable>        
+        <IsPackable>false</IsPackable>
+        <NoWarn>NU1701</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

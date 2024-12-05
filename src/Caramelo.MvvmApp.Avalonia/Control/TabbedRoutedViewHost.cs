@@ -19,10 +19,10 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
     #region Fields
 
     public static readonly StyledProperty<RoutingState?> RouterProperty =
-        AvaloniaProperty.Register<RoutedViewHost, RoutingState?>(nameof(Router));
+        AvaloniaProperty.Register<TabbedRoutedViewHost, RoutingState?>(nameof(Router));
 
     public static readonly StyledProperty<object?> DefaultContentProperty =
-        ViewModelViewHost.DefaultContentProperty.AddOwner<RoutedViewHost>();
+        ViewModelViewHost.DefaultContentProperty.AddOwner<TabbedRoutedViewHost>();
 
     #endregion
 
@@ -120,13 +120,16 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
         var viewInstance = viewLocator.ResolveView(viewModel);
         if (viewInstance == null)
         {
-            this.Log().Warn(
-                $"Couldn't find view for '{viewModel}'. Is it registered? Falling back to default content.");
+            this.Log().Warn($"Couldn't find view for '{viewModel}'. " +
+                            $"Is it registered? Falling back to default content.");
+            
+            if ((Content as TabControl)?.Items.Count > 0) return;
+        
+            Content = DefaultContent;
             return;
         }
 
         viewInstance.ViewModel = viewModel;
-
         var tabControl = Content as TabControl ?? new TabControl
         {
             HorizontalContentAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch,
@@ -150,15 +153,13 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
         var tab = tabControl.Items.SingleOrDefault(x => x is TabItem { Content: IViewFor viewFor } &&
                                                         viewFor.ViewModel == viewModel);
 
-        if (tab != null)
-        {
-            tabControl.Items.Remove(tab);
-            if (tabControl.Items.Count == 0)
-            {
-                Content = DefaultContent;
-                tabControl.SelectedIndex = 0;
-            }
-        }
+        if (tab == null) return;
+        tabControl.Items.Remove(tab);
+        
+        if (tabControl.Items.Count > 0) return;
+        
+        Content = DefaultContent;
+        tabControl.SelectedIndex = 0;
     }
 
     #endregion Methods

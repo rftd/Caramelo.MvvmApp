@@ -1,12 +1,9 @@
-﻿using System.Reactive;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using Caramelo.MvvmApp.Services.Impl;
-using ReactiveUI;
 
 namespace Caramelo.MvvmApp.ViewModel;
 
-public abstract class AppViewModel : MvvmViewModel, IScreen
+public abstract class AppViewModel : RoutableViewModel
 {
     #region Fields
 
@@ -19,7 +16,6 @@ public abstract class AppViewModel : MvvmViewModel, IScreen
 
     protected AppViewModel(IServiceProvider service) : base(service)
     {
-        Router = ((NavigationService)Navigation).Router;
         finishApp = new Subject<int>();
         restartApp = new Subject<string[]>();
     }
@@ -27,8 +23,6 @@ public abstract class AppViewModel : MvvmViewModel, IScreen
     #endregion Constructors
 
     #region Properties
-
-    public RoutingState Router { get; }
     
     public IObservable<int> OnFinishApp => finishApp.AsObservable();
     

@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         var assemblies = extraAssemblies.Concat([Assembly.GetEntryAssembly()])
             .Where(x => x is not null).Cast<Assembly>().ToArray();
         var viewModel = typeof(IMvvmViewModel);
-        var routerModel = typeof(AppViewModel);
+        var routerModel = typeof(RoutableViewModel);
         var viewModels = assemblies.SelectMany(x => x.DefinedTypes)
             .Where(type => viewModel.IsAssignableFrom(type) && 
                            !routerModel.IsAssignableFrom(type) &&

@@ -27,6 +27,7 @@ public abstract partial class MvvmDialogViewModel<TParameter, TResult> : Reactiv
         Service = service;
         Log = Service.GetRequiredService<ILogger<MvvmDialogViewModel<TParameter, TResult>>>();
         IsBusy = false;
+        DialogResult = default!;
     }
 
     #endregion Constructors

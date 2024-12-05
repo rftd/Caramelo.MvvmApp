@@ -4,38 +4,22 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
-using Caramelo.MvvmApp.Extensions;
 using Caramelo.MvvmApp.Navigation;
 using Caramelo.MvvmApp.ViewModel;
-using ReactiveUI;
 
 namespace Caramelo.MvvmApp.Services.Impl;
 
-internal class NavigationService : INavigationService
+internal class NavigationService(IServiceProvider service) : INavigationService
 {
     #region Fields
 
-    private readonly Subject<MvvmNavigateEventArgs> beforeNavigate;
-    private readonly ConditionalWeakTable<MvvmViewModel, TaskCompletionSource<object>?> tcsResults;
-    private readonly IServiceProvider service;
+    private readonly Subject<MvvmNavigateEventArgs> beforeNavigate = new();
+    private readonly ConditionalWeakTable<MvvmViewModel, TaskCompletionSource<object>?> tcsResults = new();
+    private readonly IRouterService routerService = service.GetRequiredService<IRouterService>();
 
     #endregion Fields
-    
-    #region Constructors
-
-    public NavigationService(IServiceProvider service)
-    {
-        this.service = service;
-        Router = new RoutingState();
-        tcsResults = new ConditionalWeakTable<MvvmViewModel, TaskCompletionSource<object>?>();
-        beforeNavigate = new Subject<MvvmNavigateEventArgs>();
-    }
-
-    #endregion Constructors
 
     #region Properties
-
-    internal RoutingState Router { get; }
 
     public IObservable<MvvmNavigateEventArgs> BeforeNavigate => beforeNavigate.AsObservable();
 
@@ -50,7 +34,7 @@ internal class NavigationService : INavigationService
         var args = new MvvmNavigateEventArgs(view, NavigationMode.Show);
         beforeNavigate.OnNext(args);
 
-        return args.Cancel ? Task.CompletedTask : Router.Navigate.Execute(view).ToTask();
+        return args.Cancel ? Task.CompletedTask : routerService.GetDefaultRouter().Navigate.Execute(view).ToTask();
     }
 
     public async Task<TResult?> GoToAsync<TModel, TResult>()
@@ -68,7 +52,7 @@ internal class NavigationService : INavigationService
         var tcs = new TaskCompletionSource<TResult>();
         tcsResults.Add(view, tcs as TaskCompletionSource<object>);
         
-        await Router.Navigate.Execute(view).ToTask();
+        await routerService.GetDefaultRouter().Navigate.Execute(view).ToTask();
 
         try
         {
@@ -91,7 +75,7 @@ internal class NavigationService : INavigationService
             return Task.CompletedTask;
         
         view.Initialize(parameter);
-        return Router.Navigate.Execute(view).ToTask();
+        return routerService.GetDefaultRouter().Navigate.Execute(view).ToTask();
     }
 
     public async Task<TResult?> GoToAsync<TModel, TParameter, TResult>(TParameter parameter)
@@ -109,7 +93,7 @@ internal class NavigationService : INavigationService
         tcsResults.Add(view, tcs as TaskCompletionSource<object>);
         view.Initialize(parameter);
         
-        await Router.Navigate.Execute(view).ToTask();
+        await routerService.GetDefaultRouter().Navigate.Execute(view).ToTask();
 
         try
         {
@@ -136,7 +120,7 @@ internal class NavigationService : INavigationService
         var args = new MvvmNavigateEventArgs(viewModel, NavigationMode.Close);
         beforeNavigate.OnNext(args);
         
-        return args.Cancel ? Task.CompletedTask : Router.NavigateBack.Execute(Unit.Default).ToTask();
+        return args.Cancel ? Task.CompletedTask : routerService.GetDefaultRouter().NavigateBack.Execute(Unit.Default).ToTask();
     }
 
     public Task GoBackAsync<TParameter, TResult>(MvvmViewModel<TParameter, TResult> viewModel, TResult result)
@@ -188,7 +172,7 @@ internal class NavigationService : INavigationService
     
     private async Task<bool> CanNavigate(NavigationMode mode, IMvvmViewModel? viewModel)
     {
-        if (Router.NavigationStack.LastOrDefault() is not MvvmViewModel view) return true;
+        if (routerService.GetDefaultRouter().NavigationStack.LastOrDefault() is not MvvmViewModel view) return true;
         return await view.CanNavigateAsync(mode, viewModel);
     }
 
