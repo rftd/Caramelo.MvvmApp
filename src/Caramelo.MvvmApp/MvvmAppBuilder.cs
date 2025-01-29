@@ -1,4 +1,5 @@
-﻿using Caramelo.MvvmApp.Services;
+﻿using System.Diagnostics;
+using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.Services.Impl;
 using Caramelo.MvvmApp.View;
 using Microsoft.Extensions.Configuration;
@@ -96,9 +97,9 @@ public sealed class MvvmAppBuilder
 
     private void InitializeConfiguration()
     {
-        Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile("appsettings.Debug.json", optional: true, reloadOnChange: true)
-            .AddJsonFile("appsettings.Release.json", optional: true, reloadOnChange: true);
+        Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        Configuration.AddJsonFile(Debugger.IsAttached ? "appsettings.Debug.json" : "appsettings.Release.json",
+            optional: true, reloadOnChange: true);
     }
     
     public MvvmApp Build()
