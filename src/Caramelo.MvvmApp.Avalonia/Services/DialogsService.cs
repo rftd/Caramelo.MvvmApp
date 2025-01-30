@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data;
 using Avalonia.Platform;
+using Caramelo.MvvmApp.Avalonia.Dialogs;
 using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.ViewModel;
@@ -88,6 +89,7 @@ public sealed class DialogsService : IDialogService
         where TResult : notnull
     {
 
+        var dialogWindowResolver = service.GetRequiredService<IDialogWindowResolver>();
         var model = service.GetRequiredService<TViewModel>();
         var viewLocator = service.GetRequiredService<IViewLocator>();
         var viewFor = viewLocator.ResolveView(model);
@@ -96,7 +98,7 @@ public sealed class DialogsService : IDialogService
 
         var window = viewFor switch
         {
-            UserControl mvvmUserControl => CreateWindow(mvvmUserControl),
+            UserControl mvvmUserControl => dialogWindowResolver.CreateWindow(mvvmUserControl),
             Window view => view,
             _ => throw new ApplicationException("View Não Suportada.")
         };
@@ -121,22 +123,6 @@ public sealed class DialogsService : IDialogService
         {
             return default!;
         }
-    }
-
-    private static Window CreateWindow(Control dialog)
-    {
-        var window = new Window
-        {
-            Content = new DockPanel
-            {
-                LastChildFill = true,
-                Children = { dialog }
-            },
-            SizeToContent = SizeToContent.WidthAndHeight,
-            CanResize = false
-        };
-
-        return window;
     }
 
     private static void ConfigureWindow<TViewModel, TParameter, TResult>(Window window, TViewModel viewModel)
