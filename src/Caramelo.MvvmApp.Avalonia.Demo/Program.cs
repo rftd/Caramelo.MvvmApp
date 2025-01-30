@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Reflection;
 using Avalonia;
 using Avalonia.ReactiveUI;
@@ -6,6 +7,7 @@ using Caramelo.MvvmApp.Avalonia.Demo.Views;
 using Caramelo.MvvmApp.Avalonia.Extensions;
 using Caramelo.MvvmApp.Demo.Core.ViewModels;
 using Caramelo.MvvmApp.Extensions;
+using Serilog;
 
 namespace Caramelo.MvvmApp.Avalonia.Demo
 {
@@ -25,7 +27,13 @@ namespace Caramelo.MvvmApp.Avalonia.Demo
                     UseDBusMenu = true,
                     EnableIme = true
                 }));
-            
+
+            builder.Logging.AddSerilog(new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console(applyThemeToRedirectedOutput: true)
+                .WriteTo.File("caramelo_avalonia.log", rollingInterval: RollingInterval.Day)
+                .CreateLogger());
+
             // Adiciona as views e os model
             builder.Services.AddViewAndModelFromAssembly(typeof(DemoViewModel).Assembly);
             var app = builder.Build();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Caramelo.MvvmApp.ViewModel;
+using Microsoft.Extensions.Logging;
 using ReactiveUI.SourceGenerators;
 
 namespace Caramelo.MvvmApp.Demo.Core.ViewModels;
@@ -14,6 +15,7 @@ public partial class DemoAppViewModel : AppViewModel
     [ReactiveCommand]
     private async Task OpenDemoViewAsync()
     {
+        Log.LogInformation("Opening Demo View");
         await Navigation.GoToAsync<DemoViewModel>();
     }
 }

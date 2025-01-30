@@ -33,7 +33,6 @@ public sealed class MvvmAppBuilder
         Services.AddSingleton<IConfiguration>(Configuration);
         
         InitializeNavigation();
-        InitializeLog();
         InitializeConfiguration();
     }
 
@@ -80,19 +79,6 @@ public sealed class MvvmAppBuilder
         Services.AddSingleton<INavigationService, NavigationService>();
         Services.AddSingleton<IViewLocator, MvvmViewLocator>();
         Services.AddSingleton<IRouterService, RouterService>();
-    }
-    
-    private void InitializeLog()
-    {
-        // By default, if no one else has configured logging, add a "no-op" LoggerFactory
-        // and Logger services with no providers. This way when components try to get an
-        // ILogger<> from the IServiceProvider, they don't get 'null'.
-        Services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, NullLoggerFactory>());
-        Services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(NullLogger<>)));
-        
-        Logging.AddFilter<NullLoggerProvider>(level => level >= LogLevel.Warning);
-        if(OperatingSystem.IsWindows())
-            Logging.AddFilter<EventLogLoggerProvider>(level => level >= LogLevel.Warning);
     }
 
     private void InitializeConfiguration()
