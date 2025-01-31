@@ -1,21 +1,20 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using Avalonia.Controls;
 
-namespace Caramelo.MvvmApp.WPF.Dialogs;
+namespace Caramelo.MvvmApp.Avalonia.Commom;
 
 public class DefaultDialogWindowResolver : IDialogWindowResolver
 {
-    public Window CreateWindow(Control dialog)
+    public Window CreateWindow(Control control)
     {
         var window = new Window
         {
             Content = new DockPanel
             {
                 LastChildFill = true,
-                Children = { dialog }
+                Children = { control }
             },
             SizeToContent = SizeToContent.WidthAndHeight,
-            ResizeMode = ResizeMode.NoResize
+            CanResize = false
         };
 
         return window;

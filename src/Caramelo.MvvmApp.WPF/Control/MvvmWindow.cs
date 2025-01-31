@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
-using System.Windows.Controls;
+using System.Windows;
 using Caramelo.MvvmApp.ViewModel;
 using ReactiveUI;
 
-namespace Caramelo.MvvmApp.WPF.View;
+namespace Caramelo.MvvmApp.WPF;
 
-public abstract class MvvmUserControl<TViewModel> : UserControl, IViewFor<TViewModel> 
+public class MvvmWindow<TViewModel> : Window, IViewFor<TViewModel> 
     where TViewModel : ReactiveObject, IMvvmViewModel
 {
     #region Fields
@@ -16,7 +16,7 @@ public abstract class MvvmUserControl<TViewModel> : UserControl, IViewFor<TViewM
 
     #region Constructors
 
-    protected MvvmUserControl()
+    public MvvmWindow()
     {
         Loaded += (_, _) =>
         {

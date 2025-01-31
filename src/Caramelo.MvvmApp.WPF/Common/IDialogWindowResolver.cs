@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Caramelo.MvvmApp.WPF.Dialogs;
+namespace Caramelo.MvvmApp.WPF.Common;
 
 public interface IDialogWindowResolver
 {

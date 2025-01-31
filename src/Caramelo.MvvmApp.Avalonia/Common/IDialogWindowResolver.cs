@@ -1,6 +1,6 @@
 ﻿using Avalonia.Controls;
 
-namespace Caramelo.MvvmApp.Avalonia.Dialogs;
+namespace Caramelo.MvvmApp.Avalonia.Commom;
 
 public interface IDialogWindowResolver
 {

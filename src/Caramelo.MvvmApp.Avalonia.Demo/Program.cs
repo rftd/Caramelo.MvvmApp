@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Reflection;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using Caramelo.MvvmApp.Avalonia.Demo.Views;

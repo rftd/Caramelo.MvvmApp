@@ -1,33 +1,23 @@
-﻿using System.Reactive;
-using Caramelo.MvvmApp.Dialogs;
-using ReactiveUI;
+﻿using Caramelo.MvvmApp.Dialogs;
 using ReactiveUI.SourceGenerators;
 
 namespace Caramelo.MvvmApp.ViewModel;
 
 public sealed partial class ConfirmDialogViewModel : MvvmDialogViewModel<DialogMensageOptions, bool>
 {
-    #region Fields
-
-    [Reactive] private string message = string.Empty;
-
-    #endregion Fields
-
     #region Constructors
 
     public ConfirmDialogViewModel(IServiceProvider service) : base(service)
     {
-        YesCommand = ReactiveCommand.Create(OnYesButtonPressed);
-        NoCommand = ReactiveCommand.Create(OnNoButtonPressed);
+        Message = "Confirm";
     }
 
     #endregion Constructors
 
     #region Properties
 
-    public ReactiveCommand<Unit, Unit> YesCommand { get; }
-    
-    public ReactiveCommand<Unit, Unit> NoCommand { get; }
+    [Reactive] 
+    public partial string Message { get; set; }
 
     #endregion Properties
 
@@ -39,9 +29,12 @@ public sealed partial class ConfirmDialogViewModel : MvvmDialogViewModel<DialogM
         Message = parameter.Mensagem;
     }
 
-    private void OnYesButtonPressed() => SetResult(true);
     
-    private void OnNoButtonPressed() => SetResult(false);
+    [ReactiveCommand]
+    private void Yes() => SetResult(true);
+    
+    [ReactiveCommand]
+    private void No() => SetResult(false);
 
     #endregion Methods
 }

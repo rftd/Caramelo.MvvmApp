@@ -2,6 +2,7 @@
 using Caramelo.MvvmApp.Extensions;
 using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.ViewModel;
+using Caramelo.MvvmApp.WPF.Common;
 using Caramelo.MvvmApp.WPF.Dialogs;
 using Caramelo.MvvmApp.WPF.Services;
 using Microsoft.Extensions.DependencyInjection;

@@ -2,7 +2,6 @@
                           x:Class="Caramelo.MvvmApp.Avalonia.Dialogs.InputDialogView"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                          xmlns:dialogs="clr-namespace:Caramelo.MvvmApp.Dialogs;assembly=Caramelo.MvvmApp"
                           xmlns:viewModel="clr-namespace:Caramelo.MvvmApp.ViewModel;assembly=Caramelo.MvvmApp"
                           xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
                           MinWidth="250" MinHeight="100" MaxWidth="500" MaxHeight="300">

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Reactive;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data;
-using Avalonia.Platform;
+using Caramelo.MvvmApp.Avalonia.Commom;
 using Caramelo.MvvmApp.Avalonia.Dialogs;
 using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.Services;

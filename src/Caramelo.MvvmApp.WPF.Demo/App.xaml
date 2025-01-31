@@ -1,9 +1,9 @@
-﻿<wpf:MvvmApplication x:TypeArguments="view:DemoAppViewModel" x:Class="Caramelo.MvvmApp.WPF.Demo.App"
+﻿<caramelo:MvvmApplication x:TypeArguments="view:DemoAppViewModel" x:Class="Caramelo.MvvmApp.WPF.Demo.App"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:view="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
-                      xmlns:wpf="https://github.com/rftd/Caramelo.MvvmApp">
+                      xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp">
     <Application.Resources>
          
     </Application.Resources>
-</wpf:MvvmApplication>
+</caramelo:MvvmApplication>
