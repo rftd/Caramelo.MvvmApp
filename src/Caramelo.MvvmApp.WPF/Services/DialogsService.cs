@@ -68,6 +68,19 @@ public sealed class DialogsService : IDialogService
             { Titulo = title, Mensagem = message });
     }
 
+    public Task<TResult> ShowAsync<TViewModel, TResult>(DialogOptions options)
+        where TViewModel : MvvmDialogViewModel<DialogOptions, TResult>
+        where TResult : notnull
+    {
+        return ShowAsync<TViewModel, TResult, DialogOptions>(options);
+    }
+
+    public Task<TResult> ShowAsync<TViewModel, TResult>() where TViewModel : MvvmDialogViewModel<DialogOptions, TResult>
+        where TResult : notnull
+    {
+        return ShowAsync<TViewModel, TResult, DialogOptions>(new DialogOptions());
+    }
+
     public Task ShowAsync<TViewModel>(DialogOptions options) where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>
     {
         return ShowAsync<TViewModel, Unit, DialogOptions>(options);

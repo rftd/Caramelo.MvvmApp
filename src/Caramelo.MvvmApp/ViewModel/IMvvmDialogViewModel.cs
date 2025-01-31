@@ -3,7 +3,7 @@
 namespace Caramelo.MvvmApp.ViewModel;
 
 public interface IMvvmDialogViewModel<TParameter, TResult> 
-    where TParameter : DialogOptions where TResult : notnull
+    where TParameter : DialogOptions
 {
     bool IsBusy { get; set; }
     

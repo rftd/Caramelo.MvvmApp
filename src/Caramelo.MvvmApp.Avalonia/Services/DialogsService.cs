@@ -36,42 +36,62 @@ public sealed class DialogsService : IDialogService
     #region Properties
 
     private static IClassicDesktopStyleApplicationLifetime DesktopApp =>
-        (IClassicDesktopStyleApplicationLifetime) Application.Current?.ApplicationLifetime! ?? throw new InvalidOperationException();
+        (IClassicDesktopStyleApplicationLifetime)Application.Current?.ApplicationLifetime! ??
+        throw new InvalidOperationException();
 
     #endregion Properties
-    
+
     #region Methods
 
     public Task ShowAsync(string title, string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = title, Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = title, Mensagem = message });
     }
 
     public Task InfoAsync(string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = "Informação", Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = "Informação", Mensagem = message });
     }
 
     public Task WarnAsync(string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = "Aviso", Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = "Aviso", Mensagem = message });
     }
 
     public Task ErroAsync(string message)
     {
-        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions { Titulo = "Erro", Mensagem = message });
+        return ShowAsync<MessageDialogViewModel, Unit, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = "Erro", Mensagem = message });
     }
 
     public Task<string> InputAsync(string title, string message)
     {
-        return ShowAsync<InputDialogViewModel, string, DialogMensageOptions>(new DialogMensageOptions { Titulo = title, Mensagem = message });
+        return ShowAsync<InputDialogViewModel, string, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = title, Mensagem = message });
     }
 
     public Task<bool> ConfirmAsync(string title, string message)
     {
-        return ShowAsync<ConfirmDialogViewModel, bool, DialogMensageOptions>(new DialogMensageOptions { Titulo = title, Mensagem = message });
+        return ShowAsync<ConfirmDialogViewModel, bool, DialogMensageOptions>(new DialogMensageOptions
+            { Titulo = title, Mensagem = message });
     }
-    
+
+    public Task<TResult>  ShowAsync<TViewModel, TResult>(DialogOptions options)
+        where TViewModel : MvvmDialogViewModel<DialogOptions, TResult>
+        where TResult : notnull
+    {
+        return ShowAsync<TViewModel, TResult, DialogOptions>(options);
+    }
+
+    public Task<TResult> ShowAsync<TViewModel, TResult>() where TViewModel : MvvmDialogViewModel<DialogOptions, TResult>
+        where TResult : notnull
+    {
+        return ShowAsync<TViewModel, TResult, DialogOptions>(new DialogOptions());
+    }
+
     public Task ShowAsync<TViewModel>(DialogOptions options) where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>
     {
         return ShowAsync<TViewModel, Unit, DialogOptions>(options);
@@ -87,7 +107,6 @@ public sealed class DialogsService : IDialogService
         where TParameter : DialogOptions
         where TResult : notnull
     {
-
         var dialogWindowResolver = service.GetRequiredService<IDialogWindowResolver>();
         var model = service.GetRequiredService<TViewModel>();
         var viewLocator = service.GetRequiredService<IViewLocator>();
@@ -101,13 +120,13 @@ public sealed class DialogsService : IDialogService
             Window view => view,
             _ => throw new ApplicationException("View Não Suportada.")
         };
-        
+
         model.Initialize(parameter);
         model.WhenPropertyChanged(x => x.CanClose)
             .Subscribe(x =>
             {
-                if(!x.Value) return;
-                
+                if (!x.Value) return;
+
                 window.Close();
             });
 
@@ -133,7 +152,7 @@ public sealed class DialogsService : IDialogService
         {
             window.Bind(Window.TitleProperty, new Binding("Title") { Source = viewModel });
             window.Closing += (_, args) => args.Cancel = !viewModel.CanClose;
-            
+
             window.Icon = DesktopApp.MainWindow?.Icon;
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
@@ -141,7 +160,7 @@ public sealed class DialogsService : IDialogService
         {
             //
         }
-    }    
-    
+    }
+
     #endregion Methods
 }

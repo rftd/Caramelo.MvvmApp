@@ -25,6 +25,15 @@ public interface IDialogService
         where TParameter : DialogOptions
         where TResult : notnull;
 
+    Task<TResult> ShowAsync<TViewModel, TResult>(DialogOptions options)
+        where TViewModel : MvvmDialogViewModel<DialogOptions, TResult>
+        where TResult : notnull;
+    
+    
+    Task<TResult> ShowAsync<TViewModel, TResult>()
+        where TViewModel : MvvmDialogViewModel<DialogOptions, TResult>
+        where TResult : notnull;
+    
     Task ShowAsync<TViewModel>(DialogOptions options)
         where TViewModel : MvvmDialogViewModel<DialogOptions, Unit>;
     

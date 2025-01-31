@@ -9,7 +9,6 @@ namespace Caramelo.MvvmApp.ViewModel;
 public abstract partial class MvvmDialogViewModel<TParameter, TResult> : ReactiveObject, 
     IMvvmViewModel, IMvvmDialogViewModel<TParameter, TResult> 
     where TParameter : DialogOptions
-    where TResult : notnull
 {
     #region Fields
 

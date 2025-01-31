@@ -7,7 +7,7 @@
         <TargetFrameworks>net7.0;net8.0;net9.0;net6.0</TargetFrameworks>
         <LangVersion>default</LangVersion>
         <Authors>RFTD</Authors>
-        <Version>1.0.0-beta.2</Version>
+        <Version>1.0.0-beta.4</Version>
         <Title>Caramelo.MvvmApp.Avalonia</Title>
         <PackageProjectUrl>https://github.com/rftd/Caramelo.MvvmApp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/rftd/Caramelo.MvvmApp</RepositoryUrl>
