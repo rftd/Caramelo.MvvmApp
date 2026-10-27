@@ -1,0 +1,15 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:SubDetailViewModel"
+                          x:Class="Caramelo.MvvmApp.WPF.Demo.Views.SubDetailView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core">
+    <ScrollViewer Margin="24">
+        <StackPanel MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Sub-Detalhe (Nível 3 da Aba)" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
+            <TextBlock Text="Você está no 3º nível do histórico desta aba. Ao clicar em Voltar, você retornará para o Nível 2 (DetailView)." Margin="0,0,0,16" />
+
+            <Button Content="Voltar para Nível 2" Command="{Binding GoBackCommand}" Padding="8,4" HorizontalAlignment="Left" />
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

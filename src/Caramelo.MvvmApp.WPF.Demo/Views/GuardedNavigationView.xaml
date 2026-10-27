@@ -1,0 +1,17 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:GuardedNavigationViewModel"
+                          x:Class="Caramelo.MvvmApp.WPF.Demo.Views.GuardedNavigationView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core">
+    <ScrollViewer Margin="24">
+        <StackPanel MaxWidth="650" HorizontalAlignment="Left">
+            <TextBlock Text="Navegação com Interceptação (CanNavigateAsync)" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
+            <TextBlock Text="Esta tela implementa CanNavigateAsync para confirmar com o usuário caso haja alterações não salvas antes de sair ou fechar." Margin="0,0,0,16" />
+
+            <CheckBox IsChecked="{Binding HasUnsavedChanges, Mode=TwoWay}" Content="Simular alterações não salvas pendentes" Margin="0,0,0,16" />
+
+            <Button Content="Tentar Voltar / Fechar" Command="{Binding GoBackCommand}" Padding="8,4" HorizontalAlignment="Left" />
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

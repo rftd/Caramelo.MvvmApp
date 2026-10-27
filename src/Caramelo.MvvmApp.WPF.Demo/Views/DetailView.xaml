@@ -1,0 +1,25 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:DetailViewModel"
+                          x:Class="Caramelo.MvvmApp.WPF.Demo.Views.DetailView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core">
+    <ScrollViewer Margin="24">
+        <StackPanel MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Tela de Detalhe (Nível 2 da Aba)" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
+            <TextBlock Text="Esta view foi aberta na aba atual, empilhando sobre a view anterior." Margin="0,0,0,16" />
+
+            <Border Background="#F2F2F2" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Parâmetro recebido:" FontWeight="Bold" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding ParameterReceived}" FontStyle="Italic" Foreground="DarkGreen" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Ir mais a fundo (Nível 3)" Command="{Binding OpenSubDetailCommand}" Padding="8,4" Margin="0,0,12,0" />
+                <Button Content="Voltar (Desempilhar)" Command="{Binding GoBackCommand}" Padding="8,4" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

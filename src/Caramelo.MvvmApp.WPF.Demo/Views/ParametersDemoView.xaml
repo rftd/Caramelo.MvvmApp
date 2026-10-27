@@ -1,0 +1,24 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:ParametersDemoViewModel"
+                          x:Class="Caramelo.MvvmApp.WPF.Demo.Views.ParametersDemoView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core">
+    <ScrollViewer Margin="24">
+        <StackPanel MaxWidth="650" HorizontalAlignment="Left">
+            <TextBlock Text="Navegação com Retorno de Resultado" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
+            <TextBlock Text="Demonstra o uso de GoToAsync&lt;TModel, TParam, TResult&gt; e GoBackAsync(this, result)." Margin="0,0,0,16" />
+
+            <Button Content="Abrir Tela e Aguardar Retorno" Command="{Binding RequestResultCommand}" Padding="8,4" HorizontalAlignment="Left" Margin="0,0,0,16" />
+
+            <Border Background="#F2F2F2" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Resultado recebido da tela filha:" FontWeight="Bold" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding ReturnedResult}" FontStyle="Italic" Foreground="DarkMagenta" />
+                </StackPanel>
+            </Border>
+
+            <Button Content="Voltar" Command="{Binding GoBackCommand}" Padding="8,4" HorizontalAlignment="Left" />
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

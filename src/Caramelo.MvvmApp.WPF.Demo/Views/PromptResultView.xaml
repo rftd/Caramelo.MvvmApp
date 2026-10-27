@@ -1,0 +1,20 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:PromptResultViewModel"
+                          x:Class="Caramelo.MvvmApp.WPF.Demo.Views.PromptResultView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core">
+    <ScrollViewer Margin="24">
+        <StackPanel MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Tela Filha com Retorno de Resultado" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
+            <TextBlock Text="Digite o valor que deseja retornar para a tela anterior:" Margin="0,0,0,16" />
+
+            <TextBox Text="{Binding InputResult, UpdateSourceTrigger=PropertyChanged}" Width="350" HorizontalAlignment="Left" Padding="4" Margin="0,0,0,16" />
+
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Confirmar e Retornar" Command="{Binding ConfirmResultCommand}" Padding="8,4" Margin="0,0,12,0" />
+                <Button Content="Cancelar" Command="{Binding CancelCommand}" Padding="8,4" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>
