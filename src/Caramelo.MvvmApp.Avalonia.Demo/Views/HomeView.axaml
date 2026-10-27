@@ -1,0 +1,44 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:HomeViewModel"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          x:DataType="vm:HomeViewModel"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.HomeView">
+    <ScrollViewer Margin="24">
+        <StackPanel Spacing="16" MaxWidth="700" HorizontalAlignment="Left">
+            <TextBlock Text="Demonstração do Caramelo.MvvmApp" Theme="{StaticResource Headline5SubheadlineText}" FontWeight="Bold" />
+            <TextBlock Text="Esta aplicação demonstra as funcionalidades integradas da biblioteca:" TextWrapping="Wrap" />
+
+            <Border Background="#10000000" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="1. Título Dinâmico da Aba" FontWeight="Bold" />
+                    <TextBlock Text="Altere o texto abaixo para ver o título desta aba sendo atualizado em tempo real:" />
+                    <TextBox Text="{Binding TabTitle, Mode=TwoWay}" Width="300" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <Border Background="#10000000" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="2. Navegação em Abas (TabbedHost)" FontWeight="Bold" />
+                    <TextBlock Text="Teste o comportamento de navegação na aba atual vs. nova aba:" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Content="Navegar na Aba Atual (com parâmetro)" Command="{Binding OpenDetailCommand}" Margin="0,0,12,12" />
+                        <Button Content="Abrir em Nova Aba ([NewTab])" Command="{Binding OpenNewTabCommand}" Margin="0,0,12,12" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#10000000" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="3. Diálogos, Resultados e Proteção" FontWeight="Bold" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Content="Testar Diálogos (Info, Confirmação, Input)" Command="{Binding OpenDialogsCommand}" Margin="0,0,12,12" />
+                        <Button Content="Navegação com Retorno de Resultado" Command="{Binding OpenResultDemoCommand}" Margin="0,0,12,12" />
+                        <Button Content="Navegação com Interceptação (CanNavigate)" Command="{Binding OpenGuardedDemoCommand}" Margin="0,0,12,12" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

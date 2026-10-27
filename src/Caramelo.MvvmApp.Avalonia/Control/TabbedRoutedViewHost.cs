@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.ReactiveUI;
+using Caramelo.MvvmApp.Navigation;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveMarbles.ObservableEvents;
-using ReactiveUI;
-using Splat;
+using Microsoft.Extensions.Logging;
+using ReactiveUI.Avalonia.Reactive;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.Avalonia;
 
-public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLogger
+public class TabbedRoutedViewHost : ContentControl, IActivatableView, ITabbedHostAdapter<TabItem>
 {
     #region Fields
 
@@ -22,33 +20,38 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
         AvaloniaProperty.Register<TabbedRoutedViewHost, RoutingState?>(nameof(Router));
 
     public static readonly StyledProperty<object?> DefaultContentProperty =
-        ViewModelViewHost.DefaultContentProperty.AddOwner<TabbedRoutedViewHost>();
+        AvaloniaProperty.Register<TabbedRoutedViewHost, object?>(nameof(DefaultContent));
 
-    #endregion
+    private readonly TabbedHostCoordinator<TabItem> coordinator;
+    private TabControl? tabControl;
+
+    #endregion Fields
 
     #region Constructors
 
+    static TabbedRoutedViewHost()
+    {
+        DefaultContentProperty.Changed.AddClassHandler<TabbedRoutedViewHost>((host, _) =>
+        {
+            if (host.coordinator.Sessions.Count == 0)
+                host.Content = host.DefaultContent;
+        });
+    }
+
     public TabbedRoutedViewHost()
     {
+        coordinator = new TabbedHostCoordinator<TabItem>(
+            this,
+            () => ViewLocator ?? MvvmApp.Current.Services.GetRequiredService<IViewLocator>(),
+            MvvmApp.Current?.Services?.GetService<ILogger<TabbedRoutedViewHost>>());
+
         this.WhenActivated(disposables =>
         {
-            var routerRemoved = this
-                .WhenAnyValue(x => x.Router)
-                .Where(router => router == null)!
-                .Cast<object?>();
+            var routerSubscription = this.WhenAnyValue(x => x.Router)
+                .Subscribe(router => coordinator.AttachRouter(router));
 
-            this.WhenAnyValue(x => x.Router)
-                .Where(router => router != null)
-                .SelectMany(router => router!.NavigationStack.Events().CollectionChanged)
-                .Merge(routerRemoved)
-                .Where(x => x is NotifyCollectionChangedEventArgs
-                {
-                    Action: NotifyCollectionChangedAction.Reset or
-                    NotifyCollectionChangedAction.Add or
-                    NotifyCollectionChangedAction.Remove
-                })
-                .Subscribe(x => NavigateToViewModel(x as NotifyCollectionChangedEventArgs))
-                .DisposeWith(disposables);
+            disposables(routerSubscription);
+            disposables(Disposable.Create(() => coordinator.DetachRouter()));
         });
     }
 
@@ -70,96 +73,80 @@ public class TabbedRoutedViewHost : ContentControl, IActivatableView, IEnableLog
 
     public IViewLocator? ViewLocator { get; set; }
 
+    public IReadOnlyList<TabSession<TabItem>> Tabs => coordinator.Sessions;
+
     #endregion Properties
 
     #region Methods
 
-    private void NavigateToViewModel(NotifyCollectionChangedEventArgs? eventArgs)
+    public void CloseTab(TabItem tabItem) => coordinator.CloseTab(tabItem);
+
+    private TabControl GetOrCreateTabControl()
     {
-        if (Router == null)
+        if (tabControl == null)
         {
-            this.Log().Warn("Router property is null. Falling back to default content.");
-            Content = DefaultContent;
-            return;
+            tabControl = new TabControl
+            {
+                HorizontalContentAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch,
+                VerticalContentAlignment = global::Avalonia.Layout.VerticalAlignment.Stretch
+            };
         }
-
-        var viewModel = (IMvvmViewModel?)(eventArgs?.NewItems?[0] ?? eventArgs?.OldItems?[0]);
-        if (viewModel == null || eventArgs == null)
-        {
-            this.Log().Info("ViewModel is null. Falling back to default content.");
-            Content = DefaultContent;
-            return;
-        }
-
-        switch (eventArgs.Action)
-        {
-            case NotifyCollectionChangedAction.Add:
-                AddTab(viewModel);
-                break;
-
-            case NotifyCollectionChangedAction.Remove:
-                RemoveTab(viewModel);
-                break;
-
-            case NotifyCollectionChangedAction.Reset:
-                if (Content is TabControl tabControl)
-                    tabControl.Items.Clear();
-
-                Content = DefaultContent;
-                break;
-
-            default:
-                Content = DefaultContent;
-                break;
-        }
+        return tabControl;
     }
 
-    private void AddTab(IMvvmViewModel viewModel)
+    TabItem ITabbedHostAdapter<TabItem>.CreateTabItem(IMvvmViewModel viewModel, IViewFor viewInstance)
     {
-        var viewLocator = ViewLocator ?? MvvmApp.Current.Services.GetRequiredService<IViewLocator>();
-        var viewInstance = viewLocator.ResolveView(viewModel);
-        if (viewInstance == null)
-        {
-            this.Log().Warn($"Couldn't find view for '{viewModel}'. " +
-                            $"Is it registered? Falling back to default content.");
-            
-            if ((Content as TabControl)?.Items.Count > 0) return;
-        
-            Content = DefaultContent;
-            return;
-        }
-
-        viewInstance.ViewModel = viewModel;
-        var tabControl = Content as TabControl ?? new TabControl
-        {
-            HorizontalContentAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch,
-            VerticalContentAlignment = global::Avalonia.Layout.VerticalAlignment.Stretch
-        };
-        tabControl.Items.Add(new TabItem
+        return new TabItem
         {
             Header = viewModel.Title,
-            Content = viewInstance,
-        });
-
-        tabControl.SelectedIndex = tabControl.Items.Count - 1;
-
-        if (Content is not TabControl)
-            Content = tabControl;
+            Content = viewInstance
+        };
     }
 
-    private void RemoveTab(IMvvmViewModel viewModel)
+    void ITabbedHostAdapter<TabItem>.UpdateTabItem(TabItem tabItem, IMvvmViewModel viewModel, IViewFor viewInstance)
     {
-        if (Content is not TabControl tabControl) return;
-        var tab = tabControl.Items.SingleOrDefault(x => x is TabItem { Content: IViewFor viewFor } &&
-                                                        viewFor.ViewModel == viewModel);
+        tabItem.Header = viewModel.Title;
+        tabItem.Content = viewInstance;
+    }
 
-        if (tab == null) return;
-        tabControl.Items.Remove(tab);
-        
-        if (tabControl.Items.Count > 0) return;
-        
+    void ITabbedHostAdapter<TabItem>.AddTabItem(TabItem tabItem)
+    {
+        var control = GetOrCreateTabControl();
+        control.Items.Add(tabItem);
+    }
+
+    void ITabbedHostAdapter<TabItem>.RemoveTabItem(TabItem tabItem)
+    {
+        tabControl?.Items.Remove(tabItem);
+    }
+
+    void ITabbedHostAdapter<TabItem>.ClearTabItems()
+    {
+        tabControl?.Items.Clear();
+    }
+
+    TabItem? ITabbedHostAdapter<TabItem>.GetSelectedTabItem()
+    {
+        return tabControl?.SelectedItem as TabItem;
+    }
+
+    void ITabbedHostAdapter<TabItem>.SetSelectedTabItem(TabItem? tabItem)
+    {
+        tabControl?.SelectedItem = tabItem;
+    }
+
+    void ITabbedHostAdapter<TabItem>.ShowTabs()
+    {
+        var control = GetOrCreateTabControl();
+        if (!ReferenceEquals(Content, control))
+        {
+            Content = control;
+        }
+    }
+
+    void ITabbedHostAdapter<TabItem>.ShowDefaultContent()
+    {
         Content = DefaultContent;
-        tabControl.SelectedIndex = 0;
     }
 
     #endregion Methods

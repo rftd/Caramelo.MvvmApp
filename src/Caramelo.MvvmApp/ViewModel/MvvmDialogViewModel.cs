@@ -1,7 +1,7 @@
 ﻿using Caramelo.MvvmApp.Dialogs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using ReactiveUI.SourceGenerators;
 
 namespace Caramelo.MvvmApp.ViewModel;

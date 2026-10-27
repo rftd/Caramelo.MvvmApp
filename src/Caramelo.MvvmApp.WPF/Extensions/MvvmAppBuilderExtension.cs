@@ -7,7 +7,7 @@ using Caramelo.MvvmApp.WPF.Dialogs;
 using Caramelo.MvvmApp.WPF.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.WPF.Extensions;
 

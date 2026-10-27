@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0-windows;net7.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
+        <TargetFrameworks>net8.0-windows;net9.0-windows;net10.0-windows</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <UseWpf>True</UseWpf>
@@ -20,6 +20,7 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <NoWarn>NU1701</NoWarn>
     </PropertyGroup>
 
@@ -28,16 +29,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.403">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="ReactiveUI" Version="20.1.63" />
-        <PackageReference Include="ReactiveUI.SourceGenerators" Version="2.1.1">
+        <PackageReference Include="ReactiveUI.SourceGenerators" Version="4.2.0">
           <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="ReactiveUI.WPF" Version="20.1.63" />
+        <PackageReference Include="ReactiveUI.WPF.Reactive" Version="26.0.1" />
     </ItemGroup>
 
     <ItemGroup>

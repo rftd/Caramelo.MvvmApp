@@ -4,7 +4,7 @@ using System.Reflection;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.Extensions;
 

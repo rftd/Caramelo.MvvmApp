@@ -1,5 +1,5 @@
 ﻿using System.Reactive;
-using System.Reactive.Threading.Tasks;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -7,9 +7,8 @@ using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.ViewModel;
 using Caramelo.MvvmApp.WPF.Extensions;
-using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.WPF.Services;
 
@@ -110,13 +109,9 @@ public sealed class DialogsService : IDialogService
         };
 
         model.Initialize(parameter);
-        model.WhenPropertyChanged(x => x.CanClose)
-            .Subscribe(x =>
-            {
-                if (!x.Value) return;
-
-                window.Close();
-            });
+        model.WhenAnyValueUnsafe(x => x.CanClose)
+            .Where(canClose => canClose)
+            .Subscribe(_ => window.Close());
 
         ConfigureWindow<TViewModel, TParameter, TResult>(window, model, parameter);
         window.ShowDialog();

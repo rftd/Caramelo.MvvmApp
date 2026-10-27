@@ -1,6 +1,6 @@
 ﻿using Caramelo.MvvmApp.Services;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.ViewModel;
 

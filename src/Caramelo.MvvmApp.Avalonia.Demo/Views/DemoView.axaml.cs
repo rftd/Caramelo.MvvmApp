@@ -1,6 +1,3 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Caramelo.MvvmApp.Demo.Core.ViewModels;
 
 namespace Caramelo.MvvmApp.Avalonia.Demo.Views;

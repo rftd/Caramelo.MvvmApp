@@ -8,7 +8,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Caramelo.MvvmApp.Avalonia.Extensions;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
 
 namespace Caramelo.MvvmApp.Avalonia;
 
@@ -94,7 +93,7 @@ public abstract class MvvmApplication<TViewModel> : Application
         ViewModel = MvvmApp.Current.Services.GetRequiredService<TViewModel>();
         
         var viewLocator = MvvmApp.Current.Services.GetRequiredService<IViewLocator>();
-        var mainView = viewLocator.ResolveView(ViewModel);
+        var mainView = viewLocator.ResolveViewUnsafe(ViewModel, contract: null);
 
         if(mainView == null) throw new ApplicationException("View principal não encontrada.");
         
@@ -104,7 +103,7 @@ public abstract class MvvmApplication<TViewModel> : Application
         var splashViewModel = MvvmApp.Current.Services.GetService<IMvvmSplashViewModel>();
         if (splashViewModel != null)
         {
-            var splashView = viewLocator.ResolveView(splashViewModel);
+            var splashView = viewLocator.ResolveViewUnsafe(splashViewModel, contract: null);
             if(splashView == null) throw new ApplicationException("SplashView não encontrada.");
 
             splashView!.ViewModel = splashViewModel;

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.Logging;
 
@@ -51,7 +50,6 @@ public sealed class MvvmApp : IDisposable
 
     private void InitializeReactiveUi()
     {
-        Locator.CurrentMutable.InitializeReactiveUI();
         Locator.CurrentMutable.UseMicrosoftExtensionsLoggingWithWrappingFullLogger(Services.GetRequiredService<ILoggerFactory>());
     }
 

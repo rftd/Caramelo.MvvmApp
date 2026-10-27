@@ -4,13 +4,8 @@ using Caramelo.MvvmApp.Services.Impl;
 using Caramelo.MvvmApp.View;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Logging.EventLog;
-using ReactiveUI;
 using Splat.Microsoft.Extensions.DependencyInjection;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Caramelo.MvvmApp;
 

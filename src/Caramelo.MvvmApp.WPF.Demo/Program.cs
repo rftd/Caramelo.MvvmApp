@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Caramelo.MvvmApp.Demo.Core.ViewModels;
+﻿using Caramelo.MvvmApp.Demo.Core.ViewModels;
 using Caramelo.MvvmApp.Extensions;
 using Caramelo.MvvmApp.WPF.Demo.Views;
 using Caramelo.MvvmApp.WPF.Extensions;

@@ -1,0 +1,16 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:SubDetailViewModel"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          x:DataType="vm:SubDetailViewModel"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.SubDetailView">
+    <ScrollViewer Margin="24">
+        <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Sub-Detalhe (Nível 3 da Aba)" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
+            <TextBlock Text="Você está no 3º nível do histórico desta aba. Ao clicar em Voltar, você retornará para o Nível 2 (DetailView)." TextWrapping="Wrap" />
+
+            <Button Content="Voltar para Nível 2" Command="{Binding GoBackCommand}" />
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

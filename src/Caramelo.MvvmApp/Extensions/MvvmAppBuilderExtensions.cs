@@ -1,12 +1,12 @@
 ﻿using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.Extensions;
 
 public static class MvvmAppBuilderExtensions
 {
-    public static MvvmAppBuilder UserSplash<TView, TViewModel>(this MvvmAppBuilder builder)
+    public static MvvmAppBuilder UseSplash<TView, TViewModel>(this MvvmAppBuilder builder)
         where TView : class, IViewFor<TViewModel>
         where TViewModel : ReactiveObject, IMvvmSplashViewModel
     {

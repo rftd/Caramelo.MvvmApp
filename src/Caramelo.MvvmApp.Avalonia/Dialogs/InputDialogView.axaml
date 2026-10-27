@@ -1,5 +1,6 @@
 ﻿<caramelo:MvvmUserControl x:TypeArguments="viewModel:InputDialogViewModel" 
                           x:Class="Caramelo.MvvmApp.Avalonia.Dialogs.InputDialogView"
+                          x:DataType="viewModel:InputDialogViewModel"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                           xmlns:viewModel="clr-namespace:Caramelo.MvvmApp.ViewModel;assembly=Caramelo.MvvmApp"

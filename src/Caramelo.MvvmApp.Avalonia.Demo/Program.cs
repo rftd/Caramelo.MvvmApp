@@ -1,6 +1,6 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia.Reactive;
 using Caramelo.MvvmApp.Avalonia.Demo.Views;
 using Caramelo.MvvmApp.Avalonia.Extensions;
 using Caramelo.MvvmApp.Demo.Core.ViewModels;
@@ -44,7 +44,7 @@ namespace Caramelo.MvvmApp.Avalonia.Demo
             return AppBuilder.Configure<App>()
                 .LogToTrace()
                 .UsePlatformDetect()
-                .UseReactiveUI()
+                .UseReactiveUI(_ => { })
                 .With(new X11PlatformOptions
                 {
                     EnableMultiTouch = true,

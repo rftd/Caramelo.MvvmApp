@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using Caramelo.MvvmApp.ViewModel;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.WPF;
 

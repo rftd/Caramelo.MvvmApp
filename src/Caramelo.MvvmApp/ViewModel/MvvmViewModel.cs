@@ -1,10 +1,8 @@
-using System.Reactive.Linq;
 using Caramelo.MvvmApp.Navigation;
 using Caramelo.MvvmApp.Services;
-using Caramelo.MvvmApp.Services.Impl;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using ReactiveUI.SourceGenerators;
 
 namespace Caramelo.MvvmApp.ViewModel;
@@ -28,12 +26,6 @@ public abstract partial class MvvmViewModel : ReactiveObject, IMvvmViewModel, IR
         Dialogs = Service.GetRequiredService<IDialogService>();
         IsBusy = false;
 
-        ((NavigationService)Navigation).BeforeNavigate.SelectMany(async args =>
-        {
-            var ret = await CanNavigateAsync(args.Mode, args.ViewModel);
-            args.Cancel = !ret;
-            return args;
-        }).Subscribe();
     }
 
     #endregion Constructors

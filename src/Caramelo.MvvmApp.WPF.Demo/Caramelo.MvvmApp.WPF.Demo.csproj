@@ -1,23 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
         <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
         <StartupObject>Caramelo.MvvmApp.WPF.Demo.Program</StartupObject>        
         <IsPackable>false</IsPackable>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <NoWarn>NU1701</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-      <Page Update="Views\DemoAppView.xaml">
+      <Page Update="Views\**\*.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+      <Compile Update="Views\**\*.xaml.cs">
+        <DependentUpon>%(Filename).xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -27,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="ReactiveUI.WPF" Version="20.1.63" />
+      <PackageReference Include="ReactiveUI.WPF.Reactive" Version="26.0.1" />
     </ItemGroup>
 
 </Project>

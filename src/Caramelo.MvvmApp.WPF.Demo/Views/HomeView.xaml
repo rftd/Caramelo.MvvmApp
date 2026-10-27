@@ -1,0 +1,43 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:HomeViewModel"
+                          x:Class="Caramelo.MvvmApp.WPF.Demo.Views.HomeView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core">
+    <ScrollViewer Margin="24">
+        <StackPanel MaxWidth="700" HorizontalAlignment="Left">
+            <TextBlock Text="Demonstração do Caramelo.MvvmApp (WPF)" FontSize="22" FontWeight="Bold" Margin="0,0,0,16" />
+            <TextBlock Text="Esta aplicação demonstra as funcionalidades integradas da biblioteca:" Margin="0,0,0,16" />
+
+            <Border Background="#F2F2F2" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="1. Título Dinâmico da Aba" FontWeight="Bold" Margin="0,0,0,8" />
+                    <TextBlock Text="Altere o texto abaixo para ver o título desta aba sendo atualizado em tempo real:" Margin="0,0,0,8" />
+                    <TextBox Text="{Binding TabTitle, UpdateSourceTrigger=PropertyChanged}" Width="300" HorizontalAlignment="Left" Padding="4" />
+                </StackPanel>
+            </Border>
+
+            <Border Background="#F2F2F2" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="2. Navegação em Abas (TabbedHost)" FontWeight="Bold" Margin="0,0,0,8" />
+                    <TextBlock Text="Teste o comportamento de navegação na aba atual vs. nova aba:" Margin="0,0,0,8" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Content="Navegar na Aba Atual (com parâmetro)" Command="{Binding OpenDetailCommand}" Padding="8,4" Margin="0,0,12,12" />
+                        <Button Content="Abrir em Nova Aba ([NewTab])" Command="{Binding OpenNewTabCommand}" Padding="8,4" Margin="0,0,12,12" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#F2F2F2" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="3. Diálogos, Resultados e Proteção" FontWeight="Bold" Margin="0,0,0,8" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Content="Testar Diálogos" Command="{Binding OpenDialogsCommand}" Padding="8,4" Margin="0,0,12,12" />
+                        <Button Content="Navegação com Retorno de Resultado" Command="{Binding OpenResultDemoCommand}" Padding="8,4" Margin="0,0,12,12" />
+                        <Button Content="Navegação com Interceptação (CanNavigate)" Command="{Binding OpenGuardedDemoCommand}" Padding="8,4" Margin="0,0,12,12" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

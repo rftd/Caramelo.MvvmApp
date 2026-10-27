@@ -1,0 +1,20 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:GuardedNavigationViewModel"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          x:DataType="vm:GuardedNavigationViewModel"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.GuardedNavigationView">
+    <ScrollViewer Margin="24">
+        <StackPanel Spacing="16" MaxWidth="650" HorizontalAlignment="Left">
+            <TextBlock Text="Navegação com Interceptação (CanNavigateAsync)" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
+            <TextBlock Text="Esta tela implementa CanNavigateAsync para confirmar com o usuário caso haja alterações não salvas antes de sair ou fechar." TextWrapping="Wrap" />
+
+            <CheckBox IsChecked="{Binding HasUnsavedChanges, Mode=TwoWay}" Content="Simular alterações não salvas pendentes" />
+
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button Content="Tentar Voltar / Fechar" Command="{Binding GoBackCommand}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

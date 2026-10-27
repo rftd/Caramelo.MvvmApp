@@ -1,9 +1,9 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.ReactiveUI;
 using Caramelo.MvvmApp.Avalonia.Commom;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using ReactiveUI.Avalonia.Reactive;
 
 namespace Caramelo.MvvmApp.Avalonia;
 
@@ -16,7 +16,7 @@ internal class AvaloniaApplication<TApp, TView> : IMvvmApplication
         var builder = AppBuilder.Configure<TApp>()
             .UsePlatformDetect()
             .LogToTrace()
-            .UseReactiveUI();
+            .UseReactiveUI(_ => { });
 
         var configuration = MvvmApp.Current.Services.GetService<IAvaloniaConfiguration>();
         configuration?.Configure(builder);

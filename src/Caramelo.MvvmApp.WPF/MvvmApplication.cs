@@ -3,7 +3,8 @@ using System.Windows;
 using Caramelo.MvvmApp.ViewModel;
 using Caramelo.MvvmApp.WPF.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
+using ReactiveUI.Reactive.Builder;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.WPF;
 
@@ -83,6 +84,8 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
         // Calls the base implementation of this method
         base.OnStartup(e);
 
+        _ = RxAppBuilder.CreateReactiveUIBuilder().WithWpf().BuildApp();
+
         // Signs up for the unhandled exception event, which is raised when an exception was thrown, which was not handled by user-code
         AppDomain.CurrentDomain.UnhandledException += (_, eventArguments) => OnUnhandledExceptionAsync(eventArguments);
 
@@ -94,7 +97,7 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
 
         var appViewModel = MvvmApp.Current.Services.GetRequiredService<TViewModel>();
         var viewLocator = MvvmApp.Current.Services.GetRequiredService<IViewLocator>();
-        var mainView = viewLocator.ResolveView(appViewModel);
+        var mainView = viewLocator.ResolveViewUnsafe(appViewModel, contract: null);
         if(mainView == null) throw new ApplicationException("View principal não encontrada.");
         
         // Calls the on started method where the user is able to call his own code to set up the application
@@ -103,7 +106,7 @@ public abstract class MvvmApplication<TViewModel> : Application, IMvvmApplicatio
         var splashViewModel = MvvmApp.Current.Services.GetService<IMvvmSplashViewModel>();
         if (splashViewModel != null)
         {
-            var splashView = viewLocator.ResolveView(splashViewModel);
+            var splashView = viewLocator.ResolveViewUnsafe(splashViewModel, contract: null);
             if(splashView == null) throw new ApplicationException("SplashView não encontrada.");
 
             splashView!.ViewModel = splashViewModel;

@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data;
 using Caramelo.MvvmApp.Avalonia.Commom;
-using Caramelo.MvvmApp.Avalonia.Dialogs;
 using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.ViewModel;
-using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
 
 namespace Caramelo.MvvmApp.Avalonia.Services;
 
@@ -122,13 +120,9 @@ public sealed class DialogsService : IDialogService
         };
 
         model.Initialize(parameter);
-        model.WhenPropertyChanged(x => x.CanClose)
-            .Subscribe(x =>
-            {
-                if (!x.Value) return;
-
-                window.Close();
-            });
+        model.WhenAnyValueUnsafe(x => x.CanClose)
+            .Where(canClose => canClose)
+            .Subscribe(_ => window.Close());
 
         ConfigureWindow<TViewModel, TParameter, TResult>(window, model);
         await window.ShowDialog(DesktopApp.MainWindow!);

@@ -1,0 +1,31 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:DialogsDemoViewModel"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          x:DataType="vm:DialogsDemoViewModel"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DialogsDemoView">
+    <ScrollViewer Margin="24">
+        <StackPanel Spacing="16" MaxWidth="650" HorizontalAlignment="Left">
+            <TextBlock Text="Demonstração do IDialogService" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
+            <TextBlock Text="Dispare os diferentes tipos de diálogo suportados pela lib:" />
+
+            <WrapPanel Orientation="Horizontal">
+                <Button Content="Informação (InfoAsync)" Command="{Binding ShowInfoCommand}" Margin="0,0,12,12" />
+                <Button Content="Aviso (WarnAsync)" Command="{Binding ShowWarningCommand}" Margin="0,0,12,12" />
+                <Button Content="Erro (ErroAsync)" Command="{Binding ShowErrorCommand}" Margin="0,0,12,12" />
+                <Button Content="Confirmação (ConfirmAsync)" Command="{Binding ShowConfirmCommand}" Margin="0,0,12,12" />
+                <Button Content="Entrada de Texto (InputAsync)" Command="{Binding ShowInputCommand}" Margin="0,0,12,12" />
+            </WrapPanel>
+
+            <Border Background="#10000000" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Resultado do último diálogo:" FontWeight="Bold" />
+                    <TextBlock Text="{Binding LastResult}" FontStyle="Italic" Foreground="DarkBlue" />
+                </StackPanel>
+            </Border>
+
+            <Button Content="Voltar" Command="{Binding GoBackCommand}" />
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

@@ -1,0 +1,26 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:DetailViewModel"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          x:DataType="vm:DetailViewModel"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DetailView">
+    <ScrollViewer Margin="24">
+        <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Tela de Detalhe (Nível 2 da Aba)" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
+            <TextBlock Text="Esta view foi aberta na aba atual, empilhando sobre a view anterior." />
+
+            <Border Background="#10000000" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Parâmetro recebido:" FontWeight="Bold" />
+                    <TextBlock Text="{Binding ParameterReceived}" FontStyle="Italic" Foreground="DarkGreen" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button Content="Ir mais a fundo (Nível 3)" Command="{Binding OpenSubDetailCommand}" />
+                <Button Content="Voltar (Desempilhar)" Command="{Binding GoBackCommand}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

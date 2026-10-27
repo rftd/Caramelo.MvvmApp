@@ -1,0 +1,21 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:PromptResultViewModel"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          x:DataType="vm:PromptResultViewModel"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.PromptResultView">
+    <ScrollViewer Margin="24">
+        <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Tela Filha com Retorno de Resultado" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
+            <TextBlock Text="Digite o valor que deseja retornar para a tela anterior:" />
+
+            <TextBox Text="{Binding InputResult, Mode=TwoWay}" Width="350" HorizontalAlignment="Left" />
+
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button Content="Confirmar e Retornar" Command="{Binding ConfirmResultCommand}" />
+                <Button Content="Cancelar" Command="{Binding CancelCommand}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

@@ -1,0 +1,27 @@
+<caramelo:MvvmUserControl x:TypeArguments="vm:NewTabDemoViewModel"
+                          xmlns="https://github.com/avaloniaui"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                          xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                          x:DataType="vm:NewTabDemoViewModel"
+                          x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.NewTabDemoView">
+    <ScrollViewer Margin="24">
+        <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="View em Nova Aba ([NewTab])" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
+            <TextBlock Text="Esta tela foi aberta como uma nova aba porque sua ViewModel possui o atributo [NewTab]." TextWrapping="Wrap" />
+
+            <Border Background="#10000000" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Renomear esta aba dinamicamente:" FontWeight="Bold" />
+                    <TextBox Text="{Binding EditableTitle, Mode=TwoWay}" Width="300" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button Content="Abrir Mais Uma Nova Aba" Command="{Binding OpenAnotherTabCommand}" />
+                <Button Content="Navegar nesta Aba para Detalhes" Command="{Binding OpenDetailInsideThisTabCommand}" />
+                <Button Content="Fechar Esta Aba" Command="{Binding CloseTabCommand}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</caramelo:MvvmUserControl>

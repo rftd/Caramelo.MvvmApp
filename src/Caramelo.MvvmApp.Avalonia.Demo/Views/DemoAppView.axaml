@@ -1,35 +1,62 @@
 <caramelo:MvvmWindow x:TypeArguments="vm:DemoAppViewModel" xmlns="https://github.com/avaloniaui"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
-                 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
-                 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-                 xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
-                 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                 x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DemoAppView"
-                 Icon="/Assets/avalonia-logo.ico"
-                 Title="ReactiveUI.Mvvm.Avalonia.Demo">
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     x:DataType="vm:DemoAppViewModel"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
+                     xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+                     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+                     xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
+                     mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+                     x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DemoAppView"
+                     Icon="/Assets/avalonia-logo.ico"
+                     Title="Caramelo.MvvmApp Demo">
 
     <Design.DataContext>
         <vm:DemoAppViewModel/>
     </Design.DataContext>
     
     <controls:SnackbarHost HostName="Root">
-        <controls:NavigationDrawer LeftDrawerExpandThresholdWidth="" 
-            LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+        <controls:NavigationDrawer LeftDrawerExpandThresholdWidth="0" 
+                                   LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
             <controls:NavigationDrawer.LeftDrawerContent>
-                <StackPanel>
-                    <ListBox>
-                        <ListBox.Styles>
-                            <Style Selector="ListBoxItem">
-                                <Setter Property="Height" Value="48" />
-                                <Setter Property="Padding" Value="16,0" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                            </Style>
-                        </ListBox.Styles>
-                        <ListBoxItem>Home</ListBoxItem>
-                    </ListBox>
+                <StackPanel Width="240" Margin="8">
+                    <TextBlock Text="Caramelo Demo" Theme="{StaticResource Headline6SubheadlineText}" Margin="16,16,16,8" FontWeight="Bold" />
+                    
+                    <Button Classes="Flat" Command="{Binding OpenHomeCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="4">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <avalonia:MaterialIcon Kind="Home" Width="20" Height="20" />
+                            <TextBlock Text="Início" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Classes="Flat" Command="{Binding OpenNewTabCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="4">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <avalonia:MaterialIcon Kind="TabPlus" Width="20" Height="20" />
+                            <TextBlock Text="Nova Aba ([NewTab])" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Classes="Flat" Command="{Binding OpenDialogsCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="4">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <avalonia:MaterialIcon Kind="MessageAlertOutline" Width="20" Height="20" />
+                            <TextBlock Text="Diálogos" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Classes="Flat" Command="{Binding OpenResultDemoCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="4">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <avalonia:MaterialIcon Kind="SwapHorizontal" Width="20" Height="20" />
+                            <TextBlock Text="Navegação com Resultado" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Classes="Flat" Command="{Binding OpenGuardedDemoCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="4">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <avalonia:MaterialIcon Kind="ShieldCheckOutline" Width="20" Height="20" />
+                            <TextBlock Text="Navegação Protegida" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </controls:NavigationDrawer.LeftDrawerContent>
             
@@ -37,19 +64,18 @@
                 <controls:ColorZone DockPanel.Dock="Top"
                                     VerticalAlignment="Top" HorizontalAlignment="Stretch"
                                     Height="56" Mode="PrimaryMid" ZIndex="1">
-                    <Grid Margin="16" ColumnDefinitions="24,32,*,32,Auto">
+                    <Grid Margin="16" ColumnDefinitions="32,16,*,Auto">
                         <ToggleButton Name="NavDrawerSwitch" Foreground="White"
                                       Width="32" Height="32" Padding="4">
                             <avalonia:MaterialIcon Kind="Menu" Width="24" Height="24" />
                         </ToggleButton>
-                        <TextBlock Grid.Column="2" Text="Avalonia Demo" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="Caramelo.MvvmApp Demo" FontWeight="SemiBold" VerticalAlignment="Center" />
                     </Grid>
                 </controls:ColorZone>
                 
                 <caramelo:TabbedRoutedViewHost DockPanel.Dock="Top" Router="{Binding Router}"
                                                HorizontalContentAlignment="Stretch"
                                                VerticalContentAlignment="Stretch" />
-            
             </DockPanel>
         </controls:NavigationDrawer>
     </controls:SnackbarHost>

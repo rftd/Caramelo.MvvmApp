@@ -9,7 +9,6 @@ using Caramelo.MvvmApp.Services;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using ReactiveUI;
 
 namespace Caramelo.MvvmApp.Avalonia.Extensions;
 

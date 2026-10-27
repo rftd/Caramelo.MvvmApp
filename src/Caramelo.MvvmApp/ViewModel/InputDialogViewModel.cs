@@ -1,6 +1,6 @@
 ﻿using System.Reactive;
 using Caramelo.MvvmApp.Dialogs;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 
 namespace Caramelo.MvvmApp.ViewModel;
 

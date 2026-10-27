@@ -1,6 +1,4 @@
-﻿using ReactiveUI;
-
-namespace Caramelo.MvvmApp.ViewModel;
+﻿namespace Caramelo.MvvmApp.ViewModel;
 
 public interface IMvvmViewModel : IActivatableView
 {

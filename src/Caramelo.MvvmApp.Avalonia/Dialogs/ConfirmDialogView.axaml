@@ -1,5 +1,6 @@
 ﻿<caramelo:MvvmUserControl x:TypeArguments="viewModel:ConfirmDialogViewModel" 
                           x:Class="Caramelo.MvvmApp.Avalonia.Dialogs.ConfirmDialogView"
+                          x:DataType="viewModel:ConfirmDialogViewModel"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                           xmlns:viewModel="clr-namespace:Caramelo.MvvmApp.ViewModel;assembly=Caramelo.MvvmApp"

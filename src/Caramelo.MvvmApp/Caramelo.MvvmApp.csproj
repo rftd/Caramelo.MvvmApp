@@ -7,7 +7,7 @@
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
         <LangVersion>Default</LangVersion>
-        <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <Version>1.0.0-beta.4</Version>
         <Title>Caramelo.MvvmApp</Title>
         <PackageProjectUrl>https://github.com/rftd/Caramelo.MvvmApp</PackageProjectUrl>
@@ -26,28 +26,28 @@
 
     <ItemGroup>
         <InternalsVisibleTo Include="$(AssemblyName).WPF" />
+        <InternalsVisibleTo Include="Caramelo.MvvmApp.Tests" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.403">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="ReactiveUI" Version="20.1.63" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="9.0.1" />
-        <PackageReference Include="ReactiveUI.SourceGenerators" Version="2.1.1">
+        <PackageReference Include="ReactiveUI.Reactive" Version="26.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.14" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="10.0.14" />
+        <PackageReference Include="ReactiveUI.SourceGenerators" Version="4.2.0">
           <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="15.3.1" />
-        <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="15.3.1" />
+        <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="21.0.0" />
+        <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="21.0.0" />
     </ItemGroup>
 
     <ItemGroup>

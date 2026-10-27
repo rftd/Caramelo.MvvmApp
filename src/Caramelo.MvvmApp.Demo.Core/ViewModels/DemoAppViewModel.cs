@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Caramelo.MvvmApp.ViewModel;
 using Microsoft.Extensions.Logging;
@@ -13,9 +13,37 @@ public partial class DemoAppViewModel : AppViewModel
     }
 
     [ReactiveCommand]
-    private async Task OpenDemoViewAsync()
+    private async Task OpenHomeAsync()
     {
-        Log.LogInformation("Opening Demo View");
-        await Navigation.GoToAsync<DemoViewModel>();
+        Log.LogInformation("Abrindo Início");
+        await Navigation.GoToAsync<HomeViewModel>();
+    }
+
+    [ReactiveCommand]
+    private async Task OpenNewTabAsync()
+    {
+        Log.LogInformation("Abrindo Nova Aba");
+        await Navigation.GoToAsync<NewTabDemoViewModel>();
+    }
+
+    [ReactiveCommand]
+    private async Task OpenDialogsAsync()
+    {
+        Log.LogInformation("Abrindo Diálogos");
+        await Navigation.GoToAsync<DialogsDemoViewModel>();
+    }
+
+    [ReactiveCommand]
+    private async Task OpenResultDemoAsync()
+    {
+        Log.LogInformation("Abrindo Retorno de Resultados");
+        await Navigation.GoToAsync<ParametersDemoViewModel>();
+    }
+
+    [ReactiveCommand]
+    private async Task OpenGuardedDemoAsync()
+    {
+        Log.LogInformation("Abrindo Navegação Protegida");
+        await Navigation.GoToAsync<GuardedNavigationViewModel>();
     }
 }
