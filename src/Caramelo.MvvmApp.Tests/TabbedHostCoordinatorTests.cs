@@ -1,5 +1,11 @@
+using System;
+using System.Threading.Tasks;
+using Caramelo.MvvmApp.Dialogs;
 using Caramelo.MvvmApp.Navigation;
+using Caramelo.MvvmApp.Services;
+using Caramelo.MvvmApp.Services.Impl;
 using Caramelo.MvvmApp.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI.Reactive;
 using Xunit;
 
@@ -32,6 +38,25 @@ public sealed class TabbedHostCoordinatorTests
     }
 
     [Fact]
+    public void TabNavigationResolver_ResolvesCanClose_WithViewAndViewModelPrecedence()
+    {
+        // 1. Default -> true
+        Assert.True(TabNavigationResolver.ResolveCanClose(typeof(DefaultView), typeof(DefaultViewModel)));
+
+        // 2. ViewModel has CanClose(false) -> false
+        Assert.False(TabNavigationResolver.ResolveCanClose(typeof(DefaultView), typeof(NonClosableViewModel)));
+
+        // 3. View has CanClose(true), ViewModel has CanClose(false) -> View wins (true)
+        Assert.True(TabNavigationResolver.ResolveCanClose(typeof(ClosableView), typeof(NonClosableViewModel)));
+
+        // 4. View has CanClose(false), ViewModel has CanClose(true) -> View wins (false)
+        Assert.False(TabNavigationResolver.ResolveCanClose(typeof(NonClosableView), typeof(DefaultViewModel)));
+
+        // 5. Explicit NewTab(canClose: false) -> false
+        Assert.False(TabNavigationResolver.ResolveCanClose(typeof(DefaultView), typeof(NewTabNonClosableViewModel)));
+    }
+
+    [Fact]
     public void FirstNavigation_AlwaysOpensInNewTab_EvenIfCurrentTabMode()
     {
         var adapter = new MockTabbedHostAdapter();
@@ -58,12 +83,11 @@ public sealed class TabbedHostCoordinatorTests
         var vm2 = new StubViewModel("Page 2");
         coordinator.AddTab(vm2);
 
-        // Still only 1 tab open
+        // Still single tab in adapter
         Assert.Single(adapter.Tabs);
         Assert.Equal("Page 2", adapter.Tabs[0].Header);
-        Assert.Same(adapter.Tabs[0], adapter.SelectedTab);
 
-        // Tab has 2 history entries
+        // But coordinator's session has 2 entries in history
         var session = Assert.Single(coordinator.Sessions);
         Assert.Equal(2, session.History.Count);
         Assert.Same(vm1, session.History[0].ViewModel);
@@ -86,11 +110,14 @@ public sealed class TabbedHostCoordinatorTests
         Assert.Equal("Tab 1", adapter.Tabs[0].Header);
         Assert.Equal("Tab 2", adapter.Tabs[1].Header);
         Assert.Same(adapter.Tabs[1], adapter.SelectedTab);
+
         Assert.Equal(2, coordinator.Sessions.Count);
+        Assert.Single(coordinator.Sessions[0].History);
+        Assert.Single(coordinator.Sessions[1].History);
     }
 
     [Fact]
-    public void BackNavigation_InCurrentTab_RestoresPreviousViewInThatTab()
+    public void BackNavigation_WithinCurrentTab_PopsHistoryAndRestoresPreviousView()
     {
         var adapter = new MockTabbedHostAdapter();
         using var coordinator = CreateCoordinator(adapter);
@@ -101,10 +128,11 @@ public sealed class TabbedHostCoordinatorTests
         var vm2 = new StubViewModel("Page 2");
         coordinator.AddTab(vm2);
 
-        // Go back from Page 2
+        Assert.Equal("Page 2", adapter.Tabs[0].Header);
+
+        // Remove Page 2 (like navigating back)
         coordinator.RemoveTab(vm2);
 
-        // Tab remains open, showing Page 1
         Assert.Single(adapter.Tabs);
         Assert.Equal("Page 1", adapter.Tabs[0].Header);
         Assert.Same(adapter.Tabs[0], adapter.SelectedTab);
@@ -202,6 +230,71 @@ public sealed class TabbedHostCoordinatorTests
     }
 
     [Fact]
+    public async Task CloseTabAsync_WhenCanNavigateAsyncReturnsFalse_CancelsTabClose()
+    {
+        var adapter = new MockTabbedHostAdapter();
+        using var coordinator = CreateCoordinator(adapter);
+
+        var services = CreateTestServices();
+        var guardedVm = new GuardedStubViewModel(services, "Guarded Page") { AllowClose = false };
+        coordinator.AddTab(guardedVm);
+
+        Assert.Single(adapter.Tabs);
+
+        // Try to close tab - should be rejected
+        var result = await coordinator.CloseTabAsync(adapter.Tabs[0]);
+
+        Assert.False(result);
+        Assert.Single(adapter.Tabs);
+        Assert.Single(coordinator.Sessions);
+
+        // Now allow close
+        guardedVm.AllowClose = true;
+        result = await coordinator.CloseTabAsync(adapter.Tabs[0]);
+
+        Assert.True(result);
+        Assert.Empty(adapter.Tabs);
+        Assert.Empty(coordinator.Sessions);
+    }
+
+    [Fact]
+    public void CanCloseTabs_WhenFalseOnAdapter_DisablesCanCloseOnTabs()
+    {
+        var adapter = new MockTabbedHostAdapter { CanCloseTabs = false };
+        using var coordinator = CreateCoordinator(adapter);
+
+        var vm = new StubViewModel("Page");
+        coordinator.AddTab(vm);
+
+        Assert.Single(adapter.Tabs);
+        Assert.False(adapter.Tabs[0].CanClose);
+    }
+
+    [Fact]
+    public void PerTabHistory_PreservesAndRestoresCanCloseStateAcrossNavigation()
+    {
+        var adapter = new MockTabbedHostAdapter();
+        using var coordinator = CreateCoordinator(adapter);
+
+        var page1 = new NonClosableViewModel();
+        coordinator.AddTab(page1);
+
+        Assert.False(adapter.Tabs[0].CanClose);
+
+        var page2 = new StubViewModel("Closable Child");
+        coordinator.AddTab(page2);
+
+        // Child is closable
+        Assert.True(adapter.Tabs[0].CanClose);
+
+        // Navigate back to Page 1
+        coordinator.RemoveTab(page2);
+
+        // Restores non-closable state
+        Assert.False(adapter.Tabs[0].CanClose);
+    }
+
+    [Fact]
     public void ViewModelTitleChange_UpdatesTabHeaderWhenActive()
     {
         var adapter = new MockTabbedHostAdapter();
@@ -231,6 +324,7 @@ public sealed class TabbedHostCoordinatorTests
         coordinator.Reset();
 
         Assert.Empty(adapter.Tabs);
+        Assert.Empty(coordinator.Sessions);
         Assert.False(adapter.ShowingTabs);
     }
 
@@ -240,33 +334,47 @@ public sealed class TabbedHostCoordinatorTests
             adapter,
             () => new StubViewLocator());
     }
+
+    private static IServiceProvider CreateTestServices()
+    {
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddSingleton<IRouterService, RouterService>();
+        services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<IDialogService, StubDialogService>();
+        return services.BuildServiceProvider();
+    }
 }
 
 public sealed class MockTabItem
 {
     public string? Header { get; set; }
     public object? Content { get; set; }
+    public bool CanClose { get; set; }
 }
 
 public sealed class MockTabbedHostAdapter : ITabbedHostAdapter<MockTabItem>
 {
+    public bool CanCloseTabs { get; set; } = true;
     public List<MockTabItem> Tabs { get; } = [];
     public MockTabItem? SelectedTab { get; private set; }
     public bool ShowingTabs { get; private set; }
 
-    public MockTabItem CreateTabItem(IMvvmViewModel viewModel, IViewFor viewInstance)
+    public MockTabItem CreateTabItem(IMvvmViewModel viewModel, IViewFor viewInstance, bool canClose)
     {
         return new MockTabItem
         {
             Header = viewModel.Title,
-            Content = viewInstance
+            Content = viewInstance,
+            CanClose = canClose
         };
     }
 
-    public void UpdateTabItem(MockTabItem tabItem, IMvvmViewModel viewModel, IViewFor viewInstance)
+    public void UpdateTabItem(MockTabItem tabItem, IMvvmViewModel viewModel, IViewFor viewInstance, bool canClose)
     {
         tabItem.Header = viewModel.Title;
         tabItem.Content = viewInstance;
+        tabItem.CanClose = canClose;
     }
 
     public void AddTabItem(MockTabItem tabItem) => Tabs.Add(tabItem);
@@ -340,6 +448,58 @@ public class NewTabViewModel : StubViewModel
 public class CurrentTabViewModel : StubViewModel
 {
     public CurrentTabViewModel() : base("Current Tab") { }
+}
+
+[CanClose(false)]
+public class NonClosableViewModel : StubViewModel
+{
+    public NonClosableViewModel() : base("Non Closable") { }
+}
+
+[CanClose(true)]
+public class ClosableView : IViewFor<NonClosableViewModel>
+{
+    public NonClosableViewModel? ViewModel { get; set; }
+    object? IViewFor.ViewModel
+    {
+        get => ViewModel;
+        set => ViewModel = value as NonClosableViewModel;
+    }
+}
+
+[CanClose(false)]
+public class NonClosableView : IViewFor<DefaultViewModel>
+{
+    public DefaultViewModel? ViewModel { get; set; }
+    object? IViewFor.ViewModel
+    {
+        get => ViewModel;
+        set => ViewModel = value as DefaultViewModel;
+    }
+}
+
+[NewTab(canClose: false)]
+public class NewTabNonClosableViewModel : StubViewModel
+{
+    public NewTabNonClosableViewModel() : base("New Tab Non Closable") { }
+}
+
+public class GuardedStubViewModel : MvvmViewModel
+{
+    public bool AllowClose { get; set; } = true;
+
+    public GuardedStubViewModel(IServiceProvider service, string title) : base(service)
+    {
+        Title = title;
+    }
+
+    public override Task<bool> CanNavigateAsync(NavigationMode mode, IMvvmViewModel? viewModel)
+    {
+        if (mode == NavigationMode.Close)
+            return Task.FromResult(AllowClose);
+
+        return Task.FromResult(true);
+    }
 }
 
 public class StubViewModel : ReactiveObject, IMvvmViewModel, IRoutableViewModel

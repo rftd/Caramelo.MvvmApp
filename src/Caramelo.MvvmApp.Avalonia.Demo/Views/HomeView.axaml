@@ -39,6 +39,13 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
+
+            <Border Background="#10000000" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="4. Botão de Fechar Opcional na Aba" FontWeight="Bold" />
+                    <TextBlock Text="As abas possuem botão de fechar opcional (✕). O botão pode ser controlado globalmente no host (CanCloseTabs) ou por view/viewmodel com o atributo [CanClose(false)]. Esta aba 'Início' está protegida com [CanClose(false)], enquanto novas abas exibem o botão de fechar." TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </caramelo:MvvmUserControl>

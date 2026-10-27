@@ -11,7 +11,11 @@ namespace Caramelo.MvvmApp.Navigation;
 public sealed class TabHistoryEntry : IDisposable
 {
     public required IMvvmViewModel ViewModel { get; init; }
+    
     public required IViewFor ViewInstance { get; init; }
+    
+    public bool CanClose { get; init; } = true;
+    
     public IDisposable? TitleSubscription { get; set; }
 
     public void Dispose()
@@ -25,35 +29,32 @@ public sealed class TabSession<TTabItem>(TTabItem tabItem)
     where TTabItem : class
 {
     public TTabItem TabItem { get; } = tabItem;
+    
+    public bool CanClose { get; set; } = true;
+    
     public List<TabHistoryEntry> History { get; } = [];
 }
 
-public class TabbedHostCoordinator<TTabItem> : IDisposable where TTabItem : class
+public class TabbedHostCoordinator<TTabItem>(
+    ITabbedHostAdapter<TTabItem> adapter,
+    Func<IViewLocator> viewLocatorResolver,
+    ILogger? logger = null)
+    : IDisposable
+    where TTabItem : class
 {
     #region Fields
 
-    private readonly ITabbedHostAdapter<TTabItem> adapter;
-    private readonly Func<IViewLocator> viewLocatorResolver;
-    private readonly ILogger? logger;
+    private readonly ITabbedHostAdapter<TTabItem> adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
+    
+    private readonly Func<IViewLocator> viewLocatorResolver = viewLocatorResolver ?? throw new ArgumentNullException(nameof(viewLocatorResolver));
+
     private readonly List<TabSession<TTabItem>> sessions = [];
+    
     private RoutingState? router;
+    
     private IDisposable? routerSubscription;
 
     #endregion Fields
-
-    #region Constructors
-
-    public TabbedHostCoordinator(
-        ITabbedHostAdapter<TTabItem> adapter,
-        Func<IViewLocator> viewLocatorResolver,
-        ILogger? logger = null)
-    {
-        this.adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
-        this.viewLocatorResolver = viewLocatorResolver ?? throw new ArgumentNullException(nameof(viewLocatorResolver));
-        this.logger = logger;
-    }
-
-    #endregion Constructors
 
     #region Properties
 
@@ -147,11 +148,13 @@ public class TabbedHostCoordinator<TTabItem> : IDisposable where TTabItem : clas
         viewModel.ViewCreated();
 
         var mode = TabNavigationResolver.ResolveMode(viewInstance.GetType(), viewModel.GetType());
+        var canClose = adapter.CanCloseTabs && TabNavigationResolver.ResolveCanClose(viewInstance.GetType(), viewModel.GetType(), defaultCanClose: true);
 
         var entry = new TabHistoryEntry
         {
             ViewModel = viewModel,
-            ViewInstance = viewInstance
+            ViewInstance = viewInstance,
+            CanClose = canClose
         };
 
         if (mode == TabNavigationMode.CurrentTab && sessions.Count > 0)
@@ -159,10 +162,11 @@ public class TabbedHostCoordinator<TTabItem> : IDisposable where TTabItem : clas
             var selectedTabItem = adapter.GetSelectedTabItem();
             var currentSession = sessions.FirstOrDefault(s => ReferenceEquals(s.TabItem, selectedTabItem)) ?? sessions[^1];
 
+            currentSession.CanClose = canClose;
             currentSession.History.Add(entry);
             SubscribeToTitle(entry, currentSession);
 
-            adapter.UpdateTabItem(currentSession.TabItem, viewModel, viewInstance);
+            adapter.UpdateTabItem(currentSession.TabItem, viewModel, viewInstance, canClose);
             if (!ReferenceEquals(adapter.GetSelectedTabItem(), currentSession.TabItem))
             {
                 adapter.SetSelectedTabItem(currentSession.TabItem);
@@ -170,8 +174,11 @@ public class TabbedHostCoordinator<TTabItem> : IDisposable where TTabItem : clas
         }
         else
         {
-            var tabItem = adapter.CreateTabItem(viewModel, viewInstance);
-            var session = new TabSession<TTabItem>(tabItem);
+            var tabItem = adapter.CreateTabItem(viewModel, viewInstance, canClose);
+            var session = new TabSession<TTabItem>(tabItem)
+            {
+                CanClose = canClose
+            };
             session.History.Add(entry);
             SubscribeToTitle(entry, session);
 
@@ -197,7 +204,8 @@ public class TabbedHostCoordinator<TTabItem> : IDisposable where TTabItem : clas
         if (session.History.Count > 0)
         {
             var previous = session.History[^1];
-            adapter.UpdateTabItem(session.TabItem, previous.ViewModel, previous.ViewInstance);
+            session.CanClose = previous.CanClose;
+            adapter.UpdateTabItem(session.TabItem, previous.ViewModel, previous.ViewInstance, previous.CanClose);
             adapter.SetSelectedTabItem(session.TabItem);
         }
         else
@@ -220,11 +228,36 @@ public class TabbedHostCoordinator<TTabItem> : IDisposable where TTabItem : clas
         }
     }
 
+    public async Task<bool> CloseTabAsync(TTabItem tabItem)
+    {
+        var session = sessions.FirstOrDefault(s => ReferenceEquals(s.TabItem, tabItem));
+        if (session == null) return false;
+
+        var viewModels = session.History.Select(e => e.ViewModel).Reverse().ToList();
+        foreach (var vm in viewModels)
+        {
+            if (vm is MvvmViewModel mvvm)
+            {
+                var allowed = await mvvm.CanNavigateAsync(NavigationMode.Close, vm);
+                if (!allowed)
+                    return false;
+            }
+        }
+
+        CloseTabInternal(session);
+        return true;
+    }
+
     public void CloseTab(TTabItem tabItem)
     {
         var session = sessions.FirstOrDefault(s => ReferenceEquals(s.TabItem, tabItem));
         if (session == null) return;
 
+        CloseTabInternal(session);
+    }
+
+    private void CloseTabInternal(TabSession<TTabItem> session)
+    {
         var viewModels = session.History.Select(e => e.ViewModel).Reverse().ToList();
         foreach (var vm in viewModels)
         {
@@ -258,7 +291,7 @@ public class TabbedHostCoordinator<TTabItem> : IDisposable where TTabItem : clas
             if (e.PropertyName != nameof(IMvvmViewModel.Title) && !string.IsNullOrEmpty(e.PropertyName)) return;
             if (session.History.LastOrDefault() == entry)
             {
-                adapter.UpdateTabItem(session.TabItem, entry.ViewModel, entry.ViewInstance);
+                adapter.UpdateTabItem(session.TabItem, entry.ViewModel, entry.ViewInstance, entry.CanClose);
             }
         };
         inpc.PropertyChanged += handler;

@@ -8,6 +8,7 @@ using ReactiveUI.SourceGenerators;
 namespace Caramelo.MvvmApp.Demo.Core.ViewModels;
 
 [CurrentTab]
+[CanClose(false)]
 public partial class HomeViewModel : MvvmViewModel
 {
     [Reactive] private string tabTitle = "Início";

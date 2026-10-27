@@ -4,9 +4,11 @@ namespace Caramelo.MvvmApp.Navigation;
 
 public interface ITabbedHostAdapter<TTabItem> where TTabItem : class
 {
-    TTabItem CreateTabItem(IMvvmViewModel viewModel, IViewFor viewInstance);
+    bool CanCloseTabs => true;
 
-    void UpdateTabItem(TTabItem tabItem, IMvvmViewModel viewModel, IViewFor viewInstance);
+    TTabItem CreateTabItem(IMvvmViewModel viewModel, IViewFor viewInstance, bool canClose);
+
+    void UpdateTabItem(TTabItem tabItem, IMvvmViewModel viewModel, IViewFor viewInstance, bool canClose);
 
     void AddTabItem(TTabItem tabItem);
 
