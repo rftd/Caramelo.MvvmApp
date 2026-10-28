@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="48"
+             x:Class="Caramelo.MvvmApp.Avalonia.Demo.Controls.DefaultCaption">
+
+    <StackPanel Orientation="Horizontal">
+        <Image Source="/Assets/avalonia-logo.ico"
+               Margin="12,0,0,0"
+               x:Name="ViewImage"
+               Width="22"
+               Height="22"
+               VerticalAlignment="Center"
+               IsHitTestVisible="False">
+            <Image.Effect>
+                <DropShadowEffect OffsetX="0"
+                                  OffsetY="1"
+                                  BlurRadius="3"
+                                  Opacity="{DynamicResource {actipro:ThemeResourceKey ShadowOpacity}}" />
+            </Image.Effect>
+        </Image>
+
+        <StackPanel Margin="10,6,0,6" VerticalAlignment="Center" IsHitTestVisible="False">
+            <TextBlock Text="Caramelo.MvvmApp" FontSize="11" TextTrimming="CharacterEllipsis" Opacity="0.80" />
+            <TextBlock Margin="0,-2,0,0" x:Name="CaptionHeader" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

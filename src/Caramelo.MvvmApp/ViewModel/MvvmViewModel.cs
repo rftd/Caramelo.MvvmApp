@@ -25,7 +25,6 @@ public abstract partial class MvvmViewModel : ReactiveObject, IMvvmViewModel, IR
         Log = Service.GetRequiredService<ILogger<MvvmViewModel>>();
         Dialogs = Service.GetRequiredService<IDialogService>();
         IsBusy = false;
-
     }
 
     #endregion Constructors

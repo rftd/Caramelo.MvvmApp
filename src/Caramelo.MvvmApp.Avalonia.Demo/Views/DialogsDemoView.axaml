@@ -1,31 +1,51 @@
 <caramelo:MvvmUserControl x:TypeArguments="vm:DialogsDemoViewModel"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
                           xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
                           xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
                           x:DataType="vm:DialogsDemoViewModel"
                           x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DialogsDemoView">
     <ScrollViewer Margin="24">
-        <StackPanel Spacing="16" MaxWidth="650" HorizontalAlignment="Left">
-            <TextBlock Text="Demonstração do IDialogService" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
-            <TextBlock Text="Dispare os diferentes tipos de diálogo suportados pela lib:" />
+        <StackPanel Spacing="16" MaxWidth="700" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Demonstração do IDialogService"
+                           FontSize="{actipro:ThemeResource HeadingFontSizeLarge}"
+                           FontWeight="Bold" />
+                <TextBlock Text="Dispare os diferentes tipos de diálogo suportados pela biblioteca:"
+                           Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}" />
+            </StackPanel>
 
             <WrapPanel Orientation="Horizontal">
-                <Button Content="Informação (InfoAsync)" Command="{Binding ShowInfoCommand}" Margin="0,0,12,12" />
-                <Button Content="Aviso (WarnAsync)" Command="{Binding ShowWarningCommand}" Margin="0,0,12,12" />
-                <Button Content="Erro (ErroAsync)" Command="{Binding ShowErrorCommand}" Margin="0,0,12,12" />
-                <Button Content="Confirmação (ConfirmAsync)" Command="{Binding ShowConfirmCommand}" Margin="0,0,12,12" />
-                <Button Content="Entrada de Texto (InputAsync)" Command="{Binding ShowInputCommand}" Margin="0,0,12,12" />
+                <Button Classes="theme-solid accent" Content="Informação (InfoAsync)" Command="{Binding ShowInfoCommand}" Margin="0,0,12,12" />
+                <Button Classes="theme-soft warning" Content="Aviso (WarnAsync)" Command="{Binding ShowWarningCommand}" Margin="0,0,12,12" />
+                <Button Classes="theme-soft danger" Content="Erro (ErroAsync)" Command="{Binding ShowErrorCommand}" Margin="0,0,12,12" />
+                <Button Classes="theme-soft success" Content="Confirmação (ConfirmAsync)" Command="{Binding ShowConfirmCommand}" Margin="0,0,12,12" />
+                <Button Classes="theme-outline" Content="Entrada de Texto (InputAsync)" Command="{Binding ShowInputCommand}" Margin="0,0,12,12" />
             </WrapPanel>
 
-            <Border Background="#10000000" CornerRadius="8" Padding="16">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Resultado do último diálogo:" FontWeight="Bold" />
-                    <TextBlock Text="{Binding LastResult}" FontStyle="Italic" Foreground="DarkBlue" />
-                </StackPanel>
+            <Border Background="{actipro:ThemeResource Container1BackgroundBrush}"
+                    BorderBrush="{actipro:ThemeResource Container1BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+                <DockPanel>
+                    <actipro:CopyButton DockPanel.Dock="Right"
+                                        CopyText="{Binding LastResult}"
+                                        Classes="theme-subtle"
+                                        VerticalAlignment="Center"
+                                        ToolTip.Tip="Copiar resultado" />
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Resultado do último diálogo:" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding LastResult}"
+                                   FontStyle="Italic"
+                                   Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </DockPanel>
             </Border>
 
-            <Button Content="Voltar" Command="{Binding GoBackCommand}" />
+            <Button Classes="theme-outline" Content="Voltar" Command="{Binding GoBackCommand}" HorizontalAlignment="Left" />
         </StackPanel>
     </ScrollViewer>
 </caramelo:MvvmUserControl>

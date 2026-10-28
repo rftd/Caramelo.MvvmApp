@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using Avalonia;
 using ReactiveUI.Avalonia.Reactive;
+using Caramelo.MvvmApp.Avalonia.Demo.Common;
 using Caramelo.MvvmApp.Avalonia.Demo.Views;
 using Caramelo.MvvmApp.Avalonia.Extensions;
 using Caramelo.MvvmApp.Demo.Core.ViewModels;
 using Caramelo.MvvmApp.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace Caramelo.MvvmApp.Avalonia.Demo
@@ -19,6 +21,7 @@ namespace Caramelo.MvvmApp.Avalonia.Demo
         {
             var builder = MvvmApp.CreateBuilder();
             builder.UseAvalonia<App, DemoAppViewModel, DemoAppView>()
+                .UseDialogResolver<DialogWindowResolver>()
                 .ConfigureAvalonia(x => x.With(new X11PlatformOptions
                 {
                     EnableMultiTouch = true,

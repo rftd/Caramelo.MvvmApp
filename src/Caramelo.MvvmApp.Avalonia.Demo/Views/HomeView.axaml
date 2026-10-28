@@ -1,49 +1,97 @@
 <caramelo:MvvmUserControl x:TypeArguments="vm:HomeViewModel"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+                          xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
                           xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
                           xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
                           x:DataType="vm:HomeViewModel"
                           x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.HomeView">
     <ScrollViewer Margin="24">
-        <StackPanel Spacing="16" MaxWidth="700" HorizontalAlignment="Left">
-            <TextBlock Text="Demonstração do Caramelo.MvvmApp" Theme="{StaticResource Headline5SubheadlineText}" FontWeight="Bold" />
-            <TextBlock Text="Esta aplicação demonstra as funcionalidades integradas da biblioteca:" TextWrapping="Wrap" />
+        <StackPanel Spacing="16" MaxWidth="760" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Demonstração do Caramelo.MvvmApp"
+                           FontSize="{actipro:ThemeResource HeadingFontSizeLarge}"
+                           FontWeight="Bold" />
+                <TextBlock Text="Esta aplicação demonstra as funcionalidades integradas da biblioteca utilizando o tema moderno ActiproSoftware.Controls.Avalonia:"
+                           Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
 
-            <Border Background="#10000000" CornerRadius="8" Padding="16">
+            <Border Background="{actipro:ThemeResource Container1BackgroundBrush}"
+                    BorderBrush="{actipro:ThemeResource Container1BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
                 <StackPanel Spacing="12">
-                    <TextBlock Text="1. Título Dinâmico da Aba" FontWeight="Bold" />
-                    <TextBlock Text="Altere o texto abaixo para ver o título desta aba sendo atualizado em tempo real:" />
-                    <TextBox Text="{Binding TabTitle, Mode=TwoWay}" Width="300" HorizontalAlignment="Left" />
+                    <TextBlock Text="1. Título Dinâmico da Aba" FontWeight="SemiBold" />
+                    <TextBlock Text="Altere o texto abaixo para ver o título desta aba sendo atualizado em tempo real:"
+                               Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBox Text="{Binding TabTitle, Mode=TwoWay}" Width="300" HorizontalAlignment="Left" />
+                        <actipro:CopyButton CopyText="{Binding TabTitle}"
+                                            Classes="theme-soft"
+                                            ToolTip.Tip="Copiar título da aba" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
-            <Border Background="#10000000" CornerRadius="8" Padding="16">
+            <Border Background="{actipro:ThemeResource Container1BackgroundBrush}"
+                    BorderBrush="{actipro:ThemeResource Container1BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
                 <StackPanel Spacing="12">
-                    <TextBlock Text="2. Navegação em Abas (TabbedHost)" FontWeight="Bold" />
-                    <TextBlock Text="Teste o comportamento de navegação na aba atual vs. nova aba:" />
+                    <TextBlock Text="2. Navegação em Abas (TabbedRoutedViewHost)" FontWeight="SemiBold" />
+                    <TextBlock Text="Teste o comportamento de navegação na aba atual vs. nova aba:"
+                               Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}" />
                     <WrapPanel Orientation="Horizontal">
-                        <Button Content="Navegar na Aba Atual (com parâmetro)" Command="{Binding OpenDetailCommand}" Margin="0,0,12,12" />
-                        <Button Content="Abrir em Nova Aba ([NewTab])" Command="{Binding OpenNewTabCommand}" Margin="0,0,12,12" />
+                        <Button Classes="theme-solid accent"
+                                Content="Navegar na Aba Atual (com parâmetro)"
+                                Command="{Binding OpenDetailCommand}"
+                                Margin="0,0,12,12" />
+                        <Button Classes="theme-soft accent"
+                                Content="Abrir em Nova Aba ([NewTab])"
+                                Command="{Binding OpenNewTabCommand}"
+                                Margin="0,0,12,12" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
 
-            <Border Background="#10000000" CornerRadius="8" Padding="16">
+            <Border Background="{actipro:ThemeResource Container1BackgroundBrush}"
+                    BorderBrush="{actipro:ThemeResource Container1BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
                 <StackPanel Spacing="12">
-                    <TextBlock Text="3. Diálogos, Resultados e Proteção" FontWeight="Bold" />
+                    <TextBlock Text="3. Diálogos, Resultados e Proteção" FontWeight="SemiBold" />
                     <WrapPanel Orientation="Horizontal">
-                        <Button Content="Testar Diálogos (Info, Confirmação, Input)" Command="{Binding OpenDialogsCommand}" Margin="0,0,12,12" />
-                        <Button Content="Navegação com Retorno de Resultado" Command="{Binding OpenResultDemoCommand}" Margin="0,0,12,12" />
-                        <Button Content="Navegação com Interceptação (CanNavigate)" Command="{Binding OpenGuardedDemoCommand}" Margin="0,0,12,12" />
+                        <Button Classes="theme-outline"
+                                Content="Testar Diálogos (Info, Confirmação, Input)"
+                                Command="{Binding OpenDialogsCommand}"
+                                Margin="0,0,12,12" />
+                        <Button Classes="theme-outline"
+                                Content="Navegação com Retorno de Resultado"
+                                Command="{Binding OpenResultDemoCommand}"
+                                Margin="0,0,12,12" />
+                        <Button Classes="theme-outline warning"
+                                Content="Navegação com Interceptação (CanNavigate)"
+                                Command="{Binding OpenGuardedDemoCommand}"
+                                Margin="0,0,12,12" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
 
-            <Border Background="#10000000" CornerRadius="8" Padding="16">
-                <StackPanel Spacing="12">
-                    <TextBlock Text="4. Botão de Fechar Opcional na Aba" FontWeight="Bold" />
-                    <TextBlock Text="As abas possuem botão de fechar opcional (✕). O botão pode ser controlado globalmente no host (CanCloseTabs) ou por view/viewmodel com o atributo [CanClose(false)]. Esta aba 'Início' está protegida com [CanClose(false)], enquanto novas abas exibem o botão de fechar." TextWrapping="Wrap" />
+            <Border Background="{actipro:ThemeResource Container2BackgroundBrush}"
+                    BorderBrush="{actipro:ThemeResource Container2BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="4. Botão de Fechar Opcional na Aba" FontWeight="SemiBold" />
+                    <TextBlock Text="As abas possuem botão de fechar opcional (✕). O botão pode ser controlado globalmente no host (CanCloseTabs) ou por view/viewmodel com o atributo [CanClose(false)]. Esta aba 'Início' está protegida com [CanClose(false)], enquanto novas abas exibem o botão de fechar."
+                               Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}"
+                               TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
         </StackPanel>

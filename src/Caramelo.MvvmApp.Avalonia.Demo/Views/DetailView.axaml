@@ -1,25 +1,44 @@
 <caramelo:MvvmUserControl x:TypeArguments="vm:DetailViewModel"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
                           xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
                           xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
                           x:DataType="vm:DetailViewModel"
                           x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.DetailView">
     <ScrollViewer Margin="24">
-        <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Left">
-            <TextBlock Text="Tela de Detalhe (Nível 2 da Aba)" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
-            <TextBlock Text="Esta view foi aberta na aba atual, empilhando sobre a view anterior." />
+        <StackPanel Spacing="16" MaxWidth="650" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Tela de Detalhe (Nível 2 da Aba)"
+                           FontSize="{actipro:ThemeResource HeadingFontSizeLarge}"
+                           FontWeight="Bold" />
+                <TextBlock Text="Esta view foi aberta na aba atual, empilhando sobre a view anterior."
+                           Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}" />
+            </StackPanel>
 
-            <Border Background="#10000000" CornerRadius="8" Padding="16">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Parâmetro recebido:" FontWeight="Bold" />
-                    <TextBlock Text="{Binding ParameterReceived}" FontStyle="Italic" Foreground="DarkGreen" />
-                </StackPanel>
+            <Border Background="{actipro:ThemeResource Container1BackgroundBrush}"
+                    BorderBrush="{actipro:ThemeResource Container1BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+                <DockPanel>
+                    <actipro:CopyButton DockPanel.Dock="Right"
+                                        CopyText="{Binding ParameterReceived}"
+                                        Classes="theme-subtle"
+                                        VerticalAlignment="Center"
+                                        ToolTip.Tip="Copiar parâmetro" />
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Parâmetro recebido:" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding ParameterReceived}"
+                                   FontStyle="Italic"
+                                   Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}" />
+                    </StackPanel>
+                </DockPanel>
             </Border>
 
             <StackPanel Orientation="Horizontal" Spacing="12">
-                <Button Content="Ir mais a fundo (Nível 3)" Command="{Binding OpenSubDetailCommand}" />
-                <Button Content="Voltar (Desempilhar)" Command="{Binding GoBackCommand}" />
+                <Button Classes="theme-solid accent" Content="Ir mais a fundo (Nível 3)" Command="{Binding OpenSubDetailCommand}" />
+                <Button Classes="theme-outline" Content="Voltar (Desempilhar)" Command="{Binding GoBackCommand}" />
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

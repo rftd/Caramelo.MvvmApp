@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Nullable>enable</Nullable>
         <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -7,7 +7,7 @@
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <LangVersion>default</LangVersion>
         <Authors>RFTD</Authors>
-        <Version>1.0.0-beta.4</Version>
+        <Version>1.0.0</Version>
         <Title>Caramelo.MvvmApp.Avalonia</Title>
         <PackageProjectUrl>https://github.com/rftd/Caramelo.MvvmApp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/rftd/Caramelo.MvvmApp</RepositoryUrl>

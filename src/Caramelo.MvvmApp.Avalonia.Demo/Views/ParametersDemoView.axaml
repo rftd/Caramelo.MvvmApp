@@ -1,25 +1,49 @@
 <caramelo:MvvmUserControl x:TypeArguments="vm:ParametersDemoViewModel"
                           xmlns="https://github.com/avaloniaui"
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
                           xmlns:caramelo="https://github.com/rftd/Caramelo.MvvmApp"
                           xmlns:vm="clr-namespace:Caramelo.MvvmApp.Demo.Core.ViewModels;assembly=Caramelo.MvvmApp.Demo.Core"
                           x:DataType="vm:ParametersDemoViewModel"
                           x:Class="Caramelo.MvvmApp.Avalonia.Demo.Views.ParametersDemoView">
     <ScrollViewer Margin="24">
-        <StackPanel Spacing="16" MaxWidth="650" HorizontalAlignment="Left">
-            <TextBlock Text="Navegação com Retorno de Resultado" Theme="{StaticResource Headline6SubheadlineText}" FontWeight="Bold" />
-            <TextBlock Text="Demonstra o uso de GoToAsync&lt;TModel, TParam, TResult&gt; e GoBackAsync(this, result)." TextWrapping="Wrap" />
+        <StackPanel Spacing="16" MaxWidth="680" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Navegação com Retorno de Resultado"
+                           FontSize="{actipro:ThemeResource HeadingFontSizeLarge}"
+                           FontWeight="Bold" />
+                <TextBlock Text="Demonstra o uso de GoToAsync&lt;TModel, TParam, TResult&gt; e GoBackAsync(this, result)."
+                           Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
 
-            <Button Content="Abrir Tela e Aguardar Retorno" Command="{Binding RequestResultCommand}" />
+            <Button Classes="theme-solid accent"
+                    Content="Abrir Tela e Aguardar Retorno"
+                    Command="{Binding RequestResultCommand}"
+                    HorizontalAlignment="Left" />
 
-            <Border Background="#10000000" CornerRadius="8" Padding="16">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Resultado recebido da tela filha:" FontWeight="Bold" />
-                    <TextBlock Text="{Binding ReturnedResult}" FontStyle="Italic" Foreground="DarkMagenta" />
-                </StackPanel>
+            <Border Background="{actipro:ThemeResource Container1BackgroundBrush}"
+                    BorderBrush="{actipro:ThemeResource Container1BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+                <DockPanel>
+                    <actipro:CopyButton DockPanel.Dock="Right"
+                                        CopyText="{Binding ReturnedResult}"
+                                        Classes="theme-subtle"
+                                        VerticalAlignment="Center"
+                                        ToolTip.Tip="Copiar resultado" />
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Resultado recebido da tela filha:" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding ReturnedResult}"
+                                   FontStyle="Italic"
+                                   Foreground="{actipro:ThemeResource DefaultForegroundBrushSecondary}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </DockPanel>
             </Border>
 
-            <Button Content="Voltar" Command="{Binding GoBackCommand}" />
+            <Button Classes="theme-outline" Content="Voltar" Command="{Binding GoBackCommand}" HorizontalAlignment="Left" />
         </StackPanel>
     </ScrollViewer>
 </caramelo:MvvmUserControl>
